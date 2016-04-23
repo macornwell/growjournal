@@ -1,0 +1,22 @@
+{% extends "observations/base_observations.html" %}
+
+
+{% block body %}
+{% load bootstrap3 %}
+{% bootstrap_messages %}
+
+<h1>
+Add Temperature Reading
+</h1>
+
+<form action="" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">
+            {% bootstrap_icon "star" %} Submit
+        </button>
+    {% endbuttons %}
+</form>
+Last Reading Taken: {{ last_reading }}
+{% endblock %}
