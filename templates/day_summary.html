@@ -10,7 +10,7 @@
     <div>
         {%  if summary.work_completed %}
         {% for workSummary in summary.work_completed %}
-        <h4>{{ workSummary.project_name }}</h4>
+        <h5>{{ workSummary.project_name }}</h5>
         <ul>
             {% for work in workSummary.work_items %}
             <li>{{ work }}</li>
@@ -18,37 +18,41 @@
         </ul>
         {% endfor %}
         {% else %}
-            <span>No Work Performed</span>
+            <p>No Work Performed</p>
         {% endif %}
     </div>
     <h3>
         Observations
     </h3>
     {% if summary.observations %}
-    <span>{{ summary.observations|length }} observations Taken</span>
+    <p>{{ summary.observations|length }} observations Taken</p>
     <ul>
         {% for ob in summary.observations %}
             <li>
-                <span>{{ ob }}</span>
+                <p>{{ ob }}</p>
             </li>
         {% endfor %}
     </ul>
     {% else %}
-    <span>0 Observations Taken</span>
+    <p>0 Observations Taken</p>
     {% endif %}
     <ul>
     </ul>
+    <h3>Livestock</h3>
+    {% if summary.eggs %}
+    <p>Eggs Collected: {{ summary.eggs }}</p>
+    {% endif %}
     <h4>Weather Status</h4>
     {% if summary.weather_readings %}
     <ul>
         {% for reading in summary.weather_readings %}
             <li>
-                <span aria-hidden="true" class="{{ reading|get_weather_symbol }}">{{ reading|get_weather_state_in_full }}</span>
+                <p aria-hidden="true" class="{{ reading|get_weather_symbol }}">{{ reading|get_weather_state_in_full }}</p>
             </li>
         {% endfor %}
     </ul>
     {% else %}
-        <span>No Weather Readings</span>
+        <p>No Weather Readings</p>
     {% endif %}
     {% if summary.temperature_readings %}
     <h4>
@@ -62,7 +66,7 @@
         {% endfor %}
     </ul>
     {% else %}
-        <span>No Temperature Readings Taken</span>
+        <p>No Temperature Readings Taken</p>
     {% endif %}
     <hr>
 </div>

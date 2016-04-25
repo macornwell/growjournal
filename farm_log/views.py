@@ -4,6 +4,7 @@ import django.utils.timezone as timezone
 from django.contrib import messages
 from observations.models import TemperatureReading, WeatherReading, Observation
 from work.models import WorkCompleted
+from livestock.models import EggCollection
 
 
 def home(request):
@@ -51,17 +52,19 @@ def get_daily_report(date):
     report.weather_readings = WeatherReading.get_readings_by_date(date)
     report.observations = Observation.get_observations_by_date(date)
     report.work_completed = _build_work_summary(date)
+    report.eggs = EggCollection.get_total_eggs_collected_on_date(date)
 
     return report
 
 
-
 class DailyReport:
     date = None
+    eggs = 0
     temperature_readings = []
     weather_readings = []
     observations = []
     work_completed = []
+
 
 class WorkSummaryForDay:
     project_name = None

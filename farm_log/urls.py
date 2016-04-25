@@ -6,6 +6,7 @@ from farm_log.views import home
 from rest_framework import routers
 import observations.urls as ObservationUrls
 import work.urls as WorkUrls
+import livestock.urls as LivestockUrls
 
 router = routers.DefaultRouter()
 
@@ -17,6 +18,7 @@ urlpatterns = [
 
 urlpatterns += ObservationUrls.urlpatterns
 urlpatterns += WorkUrls.urlpatterns
+urlpatterns += LivestockUrls.urlpatterns
 
 urlpatterns += [
     url(r'^api/', include(router.urls), name='api'),

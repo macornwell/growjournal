@@ -19,5 +19,6 @@ def add_weather_reading(request):
 def add_observation(request):
     return get_add_model_form(request, ADD_OBSERVATION_TEMPLATE, Observation, 'Observation', 'observation_date', ObservationForm)
 
+
 def add_temperature_reading_alpha(request):
     return render(request, 'observations/add_model_wizard.html')

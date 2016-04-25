@@ -3,12 +3,20 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+def get_objects_with_datetime_property_on_given_date(modelClass, date):
+    return modelClass.objects.filter(datetime__year=date.year,
+                                     datetime__month=date.month,
+                                     datetime__day=date.day)
+
+
 class BaseModel(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
+
+
 
 
 class BaseUserActivityModel(BaseModel):

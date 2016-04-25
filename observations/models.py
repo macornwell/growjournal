@@ -1,6 +1,6 @@
 from django.utils import timezone
 from django.db import models
-from core.models import BaseUserActivityModel, Project
+from core.models import BaseUserActivityModel, Project, get_objects_with_datetime_property_on_given_date
 from core.utils import get_summary_with_datetime, get_local_time_formatted
 
 
@@ -22,14 +22,6 @@ WEATHER_STATES = (
 )
 
 WEATHER_STATES_DICT = {key: value for (key, value) in WEATHER_STATES}
-
-
-
-def _get_objects_with_datetime_property_on_given_date(modelClass, date):
-    return modelClass.objects.filter(datetime__year=date.year,
-                                     datetime__month=date.month,
-                                     datetime__day=date.day,
-    )
 
 
 class Observation(BaseUserActivityModel):
@@ -61,7 +53,7 @@ class TemperatureReading(BaseUserActivityModel):
 
     @staticmethod
     def get_readings_by_date(date):
-        return _get_objects_with_datetime_property_on_given_date(TemperatureReading, date)
+        return get_objects_with_datetime_property_on_given_date(TemperatureReading, date)
 
 
 class WeatherReading(BaseUserActivityModel):
@@ -74,7 +66,7 @@ class WeatherReading(BaseUserActivityModel):
 
     @staticmethod
     def get_readings_by_date(date):
-        return _get_objects_with_datetime_property_on_given_date(WeatherReading, date)
+        return get_objects_with_datetime_property_on_given_date(WeatherReading, date)
 
 
 
