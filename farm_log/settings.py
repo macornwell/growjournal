@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'work',
     'observations',
     'livestock',
+    'plants',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -66,6 +67,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'core.middleware.LoginRequiredMiddleware',
+    'core.middleware.LocalTimezoneMiddleware',
 ]
 
 ROOT_URLCONF = 'farm_log.urls'
@@ -87,6 +89,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                'farm_log.context_processors.main_menu',
             ],
         },
     },

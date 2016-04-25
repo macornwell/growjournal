@@ -7,6 +7,7 @@ from rest_framework import routers
 import observations.urls as ObservationUrls
 import work.urls as WorkUrls
 import livestock.urls as LivestockUrls
+import plants.urls as PlantsUrls
 
 router = routers.DefaultRouter()
 
@@ -19,6 +20,7 @@ urlpatterns = [
 urlpatterns += ObservationUrls.urlpatterns
 urlpatterns += WorkUrls.urlpatterns
 urlpatterns += LivestockUrls.urlpatterns
+urlpatterns += PlantsUrls.urlpatterns
 
 urlpatterns += [
     url(r'^api/', include(router.urls), name='api'),

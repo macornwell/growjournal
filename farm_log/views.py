@@ -5,6 +5,7 @@ from django.contrib import messages
 from observations.models import TemperatureReading, WeatherReading, Observation
 from work.models import WorkCompleted
 from livestock.models import EggCollection
+from plants.models import Harvest, Watering, Bloom, Resource, PlantProductivityReport
 
 
 def home(request):
@@ -53,6 +54,7 @@ def get_daily_report(date):
     report.observations = Observation.get_observations_by_date(date)
     report.work_completed = _build_work_summary(date)
     report.eggs = EggCollection.get_total_eggs_collected_on_date(date)
+    report.harvests = Harvest.get_harvests_by_date(date)
 
     return report
 
@@ -64,6 +66,7 @@ class DailyReport:
     weather_readings = []
     observations = []
     work_completed = []
+    harvests = []
 
 
 class WorkSummaryForDay:

@@ -8,6 +8,19 @@
         Work
     </h3>
     <div>
+        {% if summary.eggs %}
+        <p>Eggs Collected: {{ summary.eggs }}</p>
+        {% endif %}
+        {% if summary.harvests %}
+        <h4>Harvests</h4>
+        <ul>
+            {% for harvest in summary.harvests %}
+            <li>
+                {{ harvest }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         {%  if summary.work_completed %}
         {% for workSummary in summary.work_completed %}
         <h5>{{ workSummary.project_name }}</h5>
@@ -38,10 +51,6 @@
     {% endif %}
     <ul>
     </ul>
-    <h3>Livestock</h3>
-    {% if summary.eggs %}
-    <p>Eggs Collected: {{ summary.eggs }}</p>
-    {% endif %}
     <h4>Weather Status</h4>
     {% if summary.weather_readings %}
     <ul>

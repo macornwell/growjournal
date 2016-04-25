@@ -1,6 +1,8 @@
+from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from re import compile
+from farm_log.settings import DEFAULT_TIME_ZONE
 
 EXEMPT_URLS = [compile(settings.LOGIN_URL.lstrip('/'))]
 if hasattr(settings, 'LOGIN_EXEMPT_URLS'):
@@ -26,3 +28,12 @@ class LoginRequiredMiddleware:
             path = request.path_info.lstrip('/')
             if not any(m.match(path) for m in EXEMPT_URLS):
                 return HttpResponseRedirect(settings.LOGIN_URL)
+
+
+class LocalTimezoneMiddleware(object):
+    def process_request(self, request):
+        user_timezone = request.session.get('current_timezone') or DEFAULT_TIME_ZONE
+        if timezone:
+             timezone.activate(user_timezone)
+        else:
+             timezone.deactivate()

@@ -68,6 +68,22 @@
                     <a class="btn btn-lg" href="{% url "add_egg_collection" %}">Eggs</a>
                 </li>
             </ul>
+     </li>
+     <li role="presentation" class="dropdown{% block nav-plants%}{% endblock %}">
+            <a class="dropdown-toggle btn btn-lg" data-toggle="dropdown"
+               role="button"
+               aria-expanded="false">
+                Plants<span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li role="presentation">
+                    <a class="btn btn-lg" href="{% url "add_resource" %}">Resource</a>
+                    <a class="btn btn-lg" href="{% url "add_harvest" %}">Harvest</a>
+                    <a class="btn btn-lg" href="{% url "add_watering" %}">Watering</a>
+                    <a class="btn btn-lg" href="{% url "add_plant_productivity" %}">Productivity</a>
+                    <a class="btn btn-lg" href="{% url "add_bloom" %}">Bloom</a>
+                </li>
+            </ul>
         </li>
         <!--<ul class="nav navbar-nav pull-right">-->
         <li role="presentation" class="pull-right">

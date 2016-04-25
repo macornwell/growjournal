@@ -1,0 +1,77 @@
+{% load rest_framework %}
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+    <script src="https://code.jquery.com/jquery-1.9.0.min.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/datetimepicker.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-datetimepicker.js"></script>
+
+
+
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet"  href="/static/css/weather-icons.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block head %}{% endblock head %}
+</head>
+<body>
+
+<nav>
+    <ul class="nav nav-pills navbar-default">
+        <li role="presentation" class="{% block nav-home %}{% endblock %}">
+            <a class="btn btn-lg" href="/">Home</a>
+        </li>
+        {% for item in menu_items %}
+
+        <li role="presentation" class="dropdown {{ item.navigation }}">
+            <a class="dropdown-toggle btn btn-lg" data-toggle="dropdown" role="button" aria-expanded="false">
+                {{ item.get_friendly_name }}<span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                {% for inner in item.get_children_menu_items %}
+                <li class="btn btn-lg" role="presentation">
+                    <a href="{{ inner.get_url }}">{{ inner.get_friendly_name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+
+        <li role="menu">
+            <a class="btn btn-lg" href="/admin">Admin</a>
+        </li>
+
+        <!--<ul class="nav navbar-nav pull-right">-->
+        <li role="presentation" class="pull-right">
+        <ul class="nav" id="login-dropdown" >
+            {% block userlinks %}
+                {% if user.is_authenticated %}
+                    {% optional_logout request user %}
+                {% else %}
+                    {% optional_login request %}
+                {% endif %}
+            {% endblock %}
+        </ul>
+        </li>
+    </ul>
+</nav>
+
+
+
+
+{# BODY. Where everything should go #}
+{% block body %}
+{% endblock body %}
+
+
+
+{# Main Frame Libraries #}
+<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+{% block scripts %}
+{% endblock %}
