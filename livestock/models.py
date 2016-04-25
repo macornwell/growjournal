@@ -2,10 +2,11 @@ from django.db import models
 from core.models import BaseUserActivityModel, BaseModel, get_objects_with_datetime_property_on_given_date
 from core.utils import get_local_time_formatted
 
+
 class EggCollection(BaseUserActivityModel):
     egg_collection_id = models.AutoField(primary_key=True)
     datetime = models.DateTimeField()
-    amount = models.IntegerField(max_length=4)
+    amount = models.IntegerField()
 
     @staticmethod
     def get_total_eggs_collected_on_date(date):

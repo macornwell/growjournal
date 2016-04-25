@@ -28,6 +28,9 @@ SECRET_KEY = 'wkvd(%bu1(d3bvj7eg^%$h7-%qv()humsrh9*nzh_zj^5zvv(l'
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', ''))
 
 ALLOWED_HOSTS = ['localhost', 'bbdev-1']
+LOCAL_HOST = os.environ.get('LOCAL_HOST')
+if LOCAL_HOST:
+    ALLOWED_HOSTS.append(LOCAL_HOST)
 
 
 # Application definition
