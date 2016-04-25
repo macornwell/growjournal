@@ -5,8 +5,17 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock title %}</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-1.9.0.min.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/datetimepicker.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-datetimepicker.js"></script>
+
+
+
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet"  href="/static/css/weather-icons.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block head %}{% endblock head %}
 </head>
@@ -15,6 +24,18 @@
 <nav>
     <ul class="nav nav-pills navbar-default">
         <li role="presentation" class="{% block nav-home %}{% endblock %}"><a href="/">Home</a></li>
+        <li role="presentation" class="dropdown {% block nav-work %}{% endblock %}">
+            <a class="dropdown-toggle " data-toggle="dropdown"
+               role="button"
+               aria-expanded="false">
+                Work <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li role="presentation">
+                    <a href="{% url "add_work_completed" %}">Work Completed</a>
+                </li>
+            </ul>
+        </li>
         <li role="presentation" class="dropdown {% block nav-observations%}{% endblock %}">
             <a class="dropdown-toggle " data-toggle="dropdown"
                role="button"
@@ -23,11 +44,9 @@
             </a>
             <ul class="dropdown-menu" role="menu">
                 <li role="presentation">
-                    <a href="{% url "add_temperature" %}">Temperature</a>
-                    {% comment %}
                     <a href="{% url "add_observation" %}">Observation</a>
+                    <a href="{% url "add_temperature" %}">Temperature</a>
                     <a href="{% url "add_weather" %}">Weather</a>
-                    {% endcomment %}
                 </li>
             </ul>
         </li>
@@ -56,9 +75,5 @@
 
 
 {# Main Frame Libraries #}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
-<script src="/static/js/string.format.js"></script>
-<script src="/static/js/bootstrap.js"></script>
 <!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>

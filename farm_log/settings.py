@@ -45,8 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'rest_framework',
     'bootstrap3',
+    'datetimewidget',
     'farm_log',
     'core',
+    'work',
     'observations',
 ]
 
@@ -55,6 +57,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -149,7 +152,7 @@ MEDIA_ROOT = '/media/'
 
 
 LOGIN_URL = '/api-auth/login/'
-LOGIN_URL_REDIRECT = '/'
+LOGIN_REDIRECT_URL = '/'
 
 
 ###########

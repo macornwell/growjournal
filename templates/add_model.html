@@ -1,12 +1,11 @@
-{% extends "observations/base_observations.html" %}
-
+{% extends "base.html" %}
 
 {% block body %}
 {% load bootstrap3 %}
 {% bootstrap_messages %}
 
 <h1>
-Add Temperature Reading
+Add {{ add_model_type }}
 </h1>
 
 <form action="" method="post" class="form">
@@ -18,5 +17,5 @@ Add Temperature Reading
         </button>
     {% endbuttons %}
 </form>
-Last Reading Taken: {{ last_reading }}
+Last {{ add_model_type}}: {{ last_object }}
 {% endblock %}

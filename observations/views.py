@@ -1,26 +1,21 @@
 from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import render
-from observations.models import TemperatureReading
-from observations.forms import TemperatureReadingForm
+from core.views import get_add_model_form
+from observations.models import TemperatureReading, WeatherReading, Observation
+from observations.forms import TemperatureReadingForm, WeatherReadingForm, ObservationForm
+
+ADD_OBSERVATION_TEMPLATE = 'observations/add_observation_model.html'
 
 
 def add_temperature_reading(request):
-    lastReading = ''
-    lastReadingObj = TemperatureReading.objects.order_by('-datetime').first()
-    if lastReadingObj:
-        lastReading = str(lastReadingObj)
-    if request.method == 'POST':
-        form = TemperatureReadingForm(request.POST)
-        if form.is_valid():
-            model = form.save(commit=False)
-            model.user = request.user
-            model.save()
-            messages.info(request, 'Temperature Saved!')
-            lastReading = str(model)
-        else:
-            messages.error(request, 'Unable to save Temperature.')
-    else:
-        form = TemperatureReadingForm()
-    return render(request, 'observations/temperature_reading.html', {'form': form, 'last_reading': lastReading})
+    return get_add_model_form(request, ADD_OBSERVATION_TEMPLATE, TemperatureReading, 'Temperature Reading', 'datetime', TemperatureReadingForm)
+
+
+def add_weather_reading(request):
+    return get_add_model_form(request, ADD_OBSERVATION_TEMPLATE, WeatherReading, 'Weather Reading', 'datetime', WeatherReadingForm)
+
+
+def add_observation(request):
+    return get_add_model_form(request, ADD_OBSERVATION_TEMPLATE, Observation, 'Observation', 'observation_date', ObservationForm)
 

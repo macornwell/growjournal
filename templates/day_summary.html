@@ -1,0 +1,68 @@
+{% load observation_tags %}
+
+<div class="day-summary">
+    <h2>
+        {{ summary.date|date:"M d Y D" }}
+    </h2>
+    <h3>
+        Work
+    </h3>
+    <div>
+        {%  if summary.work_completed %}
+        {% for workSummary in summary.work_completed %}
+        <h4>{{ workSummary.project_name }}</h4>
+        <ul>
+            {% for work in workSummary.work_items %}
+            <li>{{ work }}</li>
+            {% endfor %}
+        </ul>
+        {% endfor %}
+        {% else %}
+            <span>No Work Performed</span>
+        {% endif %}
+    </div>
+    <h3>
+        Observations
+    </h3>
+    {% if summary.observations %}
+    <span>{{ summary.observations|length }} observations Taken</span>
+    <ul>
+        {% for ob in summary.observations %}
+            <li>
+                <span>{{ ob }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <span>0 Observations Taken</span>
+    {% endif %}
+    <ul>
+    </ul>
+    <h4>Weather Status</h4>
+    {% if summary.weather_readings %}
+    <ul>
+        {% for reading in summary.weather_readings %}
+            <li>
+                <span aria-hidden="true" class="{{ reading|get_weather_symbol }}">{{ reading|get_weather_state_in_full }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <span>No Weather Readings</span>
+    {% endif %}
+    {% if summary.temperature_readings %}
+    <h4>
+        Temperature Readings
+    </h4>
+    <ul>
+        {% for reading in summary.temperature_readings %}
+        <li>
+            {{ reading }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <span>No Temperature Readings Taken</span>
+    {% endif %}
+    <hr>
+</div>
