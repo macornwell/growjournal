@@ -44,6 +44,11 @@
             </a>
             <ul class="dropdown-menu" role="menu">
                 <li role="presentation">
+
+                    {% comment %}
+                    <a href="{% url "add_temperature_alpha" %}">(Alpha) Temperature</a>
+                    {% endcomment %}
+
                     <a href="{% url "add_observation" %}">Observation</a>
                     <a href="{% url "add_temperature" %}">Temperature</a>
                     <a href="{% url "add_weather" %}">Weather</a>
@@ -62,6 +67,9 @@
             {% endblock %}
         </ul>
         </li>
+        <li role="menu">
+            <a href="/admin">Admin</a>
+        </li>
     </ul>
 </nav>
 
@@ -77,3 +85,5 @@
 {# Main Frame Libraries #}
 <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"></script>
 <!-- Latest compiled and minified JavaScript -->
+{% block scripts %}
+{% endblock %}
