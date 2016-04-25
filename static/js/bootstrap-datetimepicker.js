@@ -1735,8 +1735,8 @@
 	 * ================== */
 
 	$(document).on(
-		'focus.datetimepicker.data-api click.datetimepicker.data-api',
-		'[data-provide="datetimepicker"]',
+		'focus.datetimepicker.farm_log_data-api click.datetimepicker.farm_log_data-api',
+		'[farm_log_data-provide="datetimepicker"]',
 		function (e) {
 			var $this = $(this);
 			if ($this.data('datetimepicker')) return;
@@ -1746,7 +1746,7 @@
 		}
 	);
 	$(function () {
-		$('[data-provide="datetimepicker-inline"]').datetimepicker();
+		$('[farm_log_data-provide="datetimepicker-inline"]').datetimepicker();
 	});
 
 }(window.jQuery);
