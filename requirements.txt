@@ -3,6 +3,7 @@ Django==1.8.12
 django-admin-bootstrapped==2.5.7
 django-bootstrap3==7.0.1
 django-classy-tags==0.7.2
+django-datetime-widget==0.9.3
 djangorestframework==3.3.3
 gunicorn==19.4.5
 psycopg2==2.6.1
