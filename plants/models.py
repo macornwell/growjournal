@@ -72,7 +72,11 @@ class Harvest(BaseUserActivityModel):
     unit = models.ForeignKey(Unit)
 
     def __str__(self):
-        return '{0} {1} {2}'.format(self.resource.name, self.amount, self.unit.name)
+        if not details:
+            return '{0} {1} {2}'.format(self.resource.name, self.amount, self.unit.name)
+        else:
+            return '{0}:{1} {2} {3}'.format(self.resource.name, self.details, self.amount, self.unit.name)
+
 
     @staticmethod
     def get_harvests_by_date(date):
