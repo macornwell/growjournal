@@ -67,6 +67,7 @@ class Harvest(BaseUserActivityModel):
     harvest_id = models.AutoField(primary_key=True)
     resource = models.ForeignKey(Resource)
     datetime = models.DateTimeField(default=timezone.now)
+    details = models.CharField(max_length=50, blank=True, null=True)
     amount = models.DecimalField(max_digits=5, decimal_places=2)
     unit = models.ForeignKey(Unit)
 
