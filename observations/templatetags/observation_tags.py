@@ -10,7 +10,7 @@ WEATHER_STATE_TO_GLYPH = {
     'o': 'wi-cloudy',
     'r': 'wi-day-rain',
     'f': 'wi-snowflake-cold',
-    'r': 'wi-stars',
+    't': 'wi-stars',
     'n': 'wi-snow',
 }
 
@@ -24,3 +24,4 @@ def get_weather_symbol(weatherReading):
 @register.filter
 def get_weather_state_in_full(weatherReading):
     return WEATHER_STATES_DICT[weatherReading.state]
+

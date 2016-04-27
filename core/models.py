@@ -1,6 +1,6 @@
-import abc
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 def get_objects_with_datetime_property_on_given_date(modelClass, date):
@@ -27,7 +27,7 @@ class BaseUserActivityModel(BaseModel):
 class Project(models.Model):
     project_id = models.AutoField(primary_key=True)
     completed = models.BooleanField(default=False)
-    start_date = models.DateField(blank=True, null=True)
+    start_date = models.DateField(default=timezone.now, blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True, null=True)
@@ -45,3 +45,12 @@ class Unit(BaseModel):
 
     def __str__(self):
         return self.name
+
+
+class Note(BaseUserActivityModel):
+    notes_id = models.AutoField(primary_key=True)
+    notes = models.TextField()
+    datetime = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.notes

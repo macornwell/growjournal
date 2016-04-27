@@ -1,4 +1,5 @@
 {% load observation_tags %}
+{% load farm_log_core_tags %}
 
 <div class="day-summary">
     <h2>
@@ -26,7 +27,7 @@
         <h5>{{ workSummary.project_name }}</h5>
         <ul>
             {% for work in workSummary.work_items %}
-            <li>{{ work }}</li>
+            <li>{{ work.datetime|get_time }} - {{ work.work|get_summary }}</li>
             {% endfor %}
         </ul>
         {% endfor %}
@@ -34,48 +35,40 @@
             <p>No Work Performed</p>
         {% endif %}
     </div>
+    {% if summary.observations %}
     <h3>
         Observations
     </h3>
-    {% if summary.observations %}
     <p>{{ summary.observations|length }} observations Taken</p>
     <ul>
         {% for ob in summary.observations %}
             <li>
-                <p>{{ ob }}</p>
+                <p>{{ ob.observation_date|get_time }} - {{ ob.observation }}</p>
             </li>
         {% endfor %}
     </ul>
     {% else %}
-    <p>0 Observations Taken</p>
     {% endif %}
     <ul>
     </ul>
-    <h4>Weather Status</h4>
+    {% if summary.temperature_readings or summary.weather_readings %}
+    <h4>Weather</h4>
     {% if summary.weather_readings %}
-    <ul>
         {% for reading in summary.weather_readings %}
-            <li>
-                <p aria-hidden="true" class="{{ reading|get_weather_symbol }}">{{ reading|get_weather_state_in_full }}</p>
-            </li>
+                <span aria-hidden="true" class="{{ reading|get_weather_symbol }}"></span>
         {% endfor %}
-    </ul>
     {% else %}
-        <p>No Weather Readings</p>
     {% endif %}
     {% if summary.temperature_readings %}
-    <h4>
-        Temperature Readings
-    </h4>
     <ul>
         {% for reading in summary.temperature_readings %}
         <li>
-            {{ reading }}
+            {{ reading.datetime|get_time }} - {{ reading.value }} &#x00B0;{{ reading.unit }}
         </li>
         {% endfor %}
     </ul>
     {% else %}
-        <p>No Temperature Readings Taken</p>
+    {% endif %}
     {% endif %}
     <hr>
 </div>

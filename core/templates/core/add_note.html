@@ -1,0 +1,12 @@
+{% extends "add_model.html" %}
+{% block BodyExtended %}
+    <div>
+        <ul>
+        {% for note in notes %}
+            <li>
+            {{ note.notes }}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

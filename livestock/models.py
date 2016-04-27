@@ -1,11 +1,12 @@
 from django.db import models
 from core.models import BaseUserActivityModel, BaseModel, get_objects_with_datetime_property_on_given_date
 from core.utils import get_local_time_formatted
+from django.utils import timezone
 
 
 class EggCollection(BaseUserActivityModel):
     egg_collection_id = models.AutoField(primary_key=True)
-    datetime = models.DateTimeField()
+    datetime = models.DateTimeField(default=timezone.now)
     amount = models.IntegerField()
 
     @staticmethod

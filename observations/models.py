@@ -17,7 +17,7 @@ WEATHER_STATES = (
     ('o', 'Overcast'),
     ('r', 'Rainy'),
     ('f', 'Freeze'),
-    ('r', 'Frost'),
+    ('t', 'Frost'),
     ('n', 'Snow'),
 )
 

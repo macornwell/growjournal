@@ -49,11 +49,11 @@ INSTALLED_APPS = [
     'bootstrap3',
     'datetimewidget',
     'farm_log',
-    'core',
     'work',
     'observations',
     'livestock',
     'plants',
+    'core',
 ]
 
 MIDDLEWARE_CLASSES = [

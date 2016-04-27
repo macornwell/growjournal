@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from farm_log import settings
 from farm_log.views import home
 from rest_framework import routers
+import core.urls as CoreUrls
 import observations.urls as ObservationUrls
 import work.urls as WorkUrls
 import livestock.urls as LivestockUrls
@@ -17,6 +18,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+urlpatterns += CoreUrls.urlpatterns
 urlpatterns += ObservationUrls.urlpatterns
 urlpatterns += WorkUrls.urlpatterns
 urlpatterns += LivestockUrls.urlpatterns
