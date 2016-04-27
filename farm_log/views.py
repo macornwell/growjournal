@@ -44,7 +44,7 @@ def _build_work_summary(date):
     listOfData = []
     for proj in projectToItems.keys():
         summary = WorkSummaryForDay()
-        summary.project_name = proj.name
+        summary.project_name = proj
         summary.work_items = list(projectToItems[proj])
         listOfData.append(summary)
     return listOfData
