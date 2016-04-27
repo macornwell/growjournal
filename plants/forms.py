@@ -7,7 +7,7 @@ from datetimewidget.widgets import DateTimeWidget
 class HarvestForm(ModelForm):
     class Meta:
         model = Harvest
-        fields = ['resource', 'datetime', 'amount', 'unit']
+        fields = ['resource', 'datetime', 'details', 'amount', 'unit']
         widgets = {
             'datetime': DateTimeWidget(attrs={'id': "id-datetime"}, usel10n=True, bootstrap_version=3 )
         }
