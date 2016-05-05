@@ -14,6 +14,24 @@
 .weather-icon {
   margin-top: 3px;
 }
+.full-bg-success {
+  background: #5cb85c;
+}
+.full-bg-primary {
+  background: #428bca;
+}
+.full-bg-warning {
+  background: #f0ad4e;
+}
+.full-bg-danger {
+  background: #d9534f;
+}
+.log-day h4 {
+  padding: 10px;
+}
+.weather {
+  padding-top: 5px;
+}
 .modal-dialog {
   width: 100%;
   height: 100%;

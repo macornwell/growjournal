@@ -31,16 +31,18 @@
                 .quick .toggle-group { transition: none; -webkit-transition: none; }
             </style>
             <div class="col-xs-12">
+                <div class="text-center">
 
-                <label class="checkbox-inline">
-                    <input id="work-toggle" data-on="Work" data-off="Work" type="checkbox" checked data-toggle="toggle" data-style="quick">
-                </label>
                 <label class="checkbox-inline">
                     <input id="weather-toggle" data-on="Weather" data-off="Weather" type="checkbox" checked data-toggle="toggle" data-style="quick" data-onstyle="success">
                 </label>
                 <label class="checkbox-inline">
-                    <input id="harvest-toggle" data-on="Harvests" data-off="Harvests" type="checkbox" checked data-toggle="toggle" data-style="quick" data-onstyle="info">
+                    <input id="work-toggle" data-on="Work" data-off="Work" type="checkbox" checked data-toggle="toggle" data-style="quick">
                 </label>
+                <label class="checkbox-inline">
+                    <input id="harvest-toggle" data-on="Harvests" data-off="Harvests" type="checkbox" checked data-toggle="toggle" data-style="quick" data-onstyle="danger">
+                </label>
+                </div>
             </div>
         </div>
         {% for report in daily_reports %}
@@ -67,28 +69,41 @@
                     {% endif %}
                     {% if report.work_completed %}
                         <div class="work">
-                            <h4>Work</h4>
-                             {% for workSummary in report.work_completed %}
-                                <h5>{{ workSummary.project_name }}</h5>
-                                <ul>
-                                    {% for work in workSummary.work_items %}
-                                    <li>{{ work.datetime|get_time }} - {{ work.work|get_summary }}</li>
-                                    {% endfor %}
-                                </ul>
-                             {% endfor %}
+                            <div class="row">
+                                <div class="col-xs-12">
+                                <h4 class="full-bg-primary">Work</h4>
+                            </div>
                         </div>
+                            {% for workSummary in report.work_completed %}
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h5>{{ workSummary.project_name }}</h5>
+                                            <ul>
+                                                {% for work in workSummary.work_items %}
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <li>{{ work.datetime|get_time }} - {{ work.work|get_summary }}</li>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </ul>
+                                    </div>
+                                </div>
+                            {% endfor %}
                     {% endif %}
 
                     {% if report.harvests %}
-                        <div class="harvest">
-                            <h4>Harvests</h4>
-                            <ul>
-                                {% for harvest in report.harvests %}
-                                <li>
-                                    {{ harvest }}
-                                </li>
-                                {% endfor %}
-                            </ul>
+                        <div class="harvest row ">
+                            <div class="col-xs-12">
+                                <h4 class="full-bg-danger">Harvests</h4>
+                                <ul>
+                                    {% for harvest in report.harvests %}
+                                    <li>
+                                        {{ harvest }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
                     {% endif %}
                 </div>
