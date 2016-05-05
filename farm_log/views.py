@@ -50,8 +50,6 @@ def _get_dates_to_report(page):
     starting = page * LOG_DAYS_PER_PAGE
     ending = starting + LOG_DAYS_PER_PAGE
     for i in range(starting, ending):
-        if not i:
-            continue
         newDate = now - timedelta(days=i)
         datesToReport.append(newDate)
     return datesToReport
