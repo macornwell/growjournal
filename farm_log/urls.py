@@ -15,8 +15,8 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     url(r'^$', home, name='home'),
-    url(r'^(?P<page>\d+)/$', home_with_page, name='home'),
-    url(r'^(?P<page>.+)/$', home, name='home'),
+    url(r'^(?P<page>-?\d+)/$', home_with_page, name='home'),
+    #url(r'^(?P<page>.+)/$', home, name='home'),
     url(r'^work-site/$', worksite, name='work-site'),
     url(r'^admin-site/', admin.site.urls, name='admin'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

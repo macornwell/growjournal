@@ -6,7 +6,7 @@
 <nav>
     <ul class="nav nav-pills navbar-default">
         <li role="presentation" class="{% block nav-home %}{% endblock %}">
-            <a class="btn btn-lg" href="/">Home</a>
+            <a class="btn btn-lg" href="/work-site">Home</a>
         </li>
         <li role="presentation" class="dropdown {% block nav-work %}{% endblock %}">
             <a class="dropdown-toggle btn btn-lg" data-toggle="dropdown"
@@ -29,9 +29,6 @@
             <ul class="dropdown-menu" role="menu">
                 <li role="presentation">
 
-                    {% comment %}
-                    <a href="{% url "add_temperature_alpha" %}">(Alpha) Temperature</a>
-                    {% endcomment %}
 
                     <a class="btn btn-lg" href="{% url "add_observation" %}">Observation</a>
                     <a class="btn btn-lg" href="{% url "add_temperature" %}">Temperature</a>
