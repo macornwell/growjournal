@@ -71,9 +71,9 @@
                         <div class="work">
                             <div class="row">
                                 <div class="col-xs-12">
-                                <h4 class="full-bg-primary">Work</h4>
+                                    <h4 class="full-bg-primary">Work</h4>
+                                </div>
                             </div>
-                        </div>
                             {% for workSummary in report.work_completed %}
                                 <div class="row">
                                     <div class="col-xs-12">
@@ -90,6 +90,7 @@
                                     </div>
                                 </div>
                             {% endfor %}
+                        </div>
                     {% endif %}
 
                     {% if report.harvests %}
