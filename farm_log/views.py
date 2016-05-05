@@ -11,11 +11,23 @@ from graphos.renderers.gchart import LineChart
 from graphos.sources.model import SimpleDataSource
 
 
+LOG_DAYS_PER_PAGE = 5
+
 def home(request):
-    datesToReport = _get_dates_to_report()
+    return home_with_page(request, 0)
+
+def home_with_page(request, page):
+    if not page:
+        page = 0
+    page = int(page)
+    if page < 0:
+        page = 0
+    datesToReport = _get_dates_to_report(page)
     data = {'daily_reports': []}
     for date in datesToReport:
         data['daily_reports'].append(get_daily_report(date))
+    data['next_page'] = page + 1
+    data['previous_page'] = page - 1
     return render(template_name='home.html', context=data, request=request)
 
 
@@ -23,17 +35,21 @@ def home(request):
 
 @login_required
 def worksite(request):
-    datesToReport = _get_dates_to_report()
+    datesToReport = _get_dates_to_report(0)
     data = {'daily_reports': []}
     for date in datesToReport:
         data['daily_reports'].append(get_daily_report(date))
+    data['next-page'] = 1
+    data['previous-page'] = 0
     return render(template_name='worksite.html', context=data, request=request)
 
 
-def _get_dates_to_report():
+def _get_dates_to_report(page):
     now = timezone.now()
-    datesToReport = [now,]
-    for i in range(5):
+    datesToReport = []
+    starting = page * LOG_DAYS_PER_PAGE
+    ending = starting + LOG_DAYS_PER_PAGE
+    for i in range(starting, ending):
         if not i:
             continue
         newDate = now - timedelta(days=i)

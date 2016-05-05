@@ -158,6 +158,19 @@
                 </div>
             </div>
         {% endfor %}
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="text-center">
+                    <a class="btn btn-primary btn-lg" href="{% url "home" %}">Start</a>
+                    <a class="btn btn-primary btn-lg" href="{% url "home" page=previous_page %}"
+                    {% if previous_page < 0 %}
+                        disabled
+                    {% endif %}
+                    >Previous</a>
+                    <a class="btn btn-primary btn-lg" href="{% url "home" page=next_page %}">Next</a>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
