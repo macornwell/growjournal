@@ -66,7 +66,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'core.middleware.LoginRequiredMiddleware',
+    #'core.middleware.LoginRequiredMiddleware',
     'core.middleware.LocalTimezoneMiddleware',
 ]
 
@@ -89,7 +89,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                'farm_log.context_processors.main_menu',
+                #'farm_log.context_processors.main_menu',
             ],
         },
     },
@@ -158,7 +158,7 @@ MEDIA_ROOT = '/media/'
 
 
 LOGIN_URL = '/api-auth/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/worksite'
 
 
 ###########

@@ -1,6 +1,7 @@
 from datetime import timedelta
 from django.shortcuts import render
 import django.utils.timezone as timezone
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from observations.models import TemperatureReading, WeatherReading, Observation
 from work.models import WorkCompleted
@@ -20,6 +21,13 @@ def home(request):
 
 
 
+@login_required
+def worksite(request):
+    datesToReport = _get_dates_to_report()
+    data = {'daily_reports': []}
+    for date in datesToReport:
+        data['daily_reports'].append(get_daily_report(date))
+    return render(template_name='worksite.html', context=data, request=request)
 
 
 def _get_dates_to_report():
@@ -48,7 +56,6 @@ def _build_work_summary(date):
         summary.work_items = list(projectToItems[proj])
         listOfData.append(summary)
     return listOfData
-
 
 
 def get_daily_report(date):

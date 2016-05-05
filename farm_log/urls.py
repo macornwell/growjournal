@@ -2,7 +2,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
 from farm_log import settings
-from farm_log.views import home
+from farm_log.views import home, worksite
 from rest_framework import routers
 import core.urls as CoreUrls
 import observations.urls as ObservationUrls
@@ -15,7 +15,8 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     url(r'^$', home),
-    url(r'^admin/', admin.site.urls),
+    url(r'^work-site/$', worksite, name='work-site'),
+    url(r'^admin-site/', admin.site.urls, name='admin'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += CoreUrls.urlpatterns

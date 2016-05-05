@@ -1,20 +1,117 @@
 {% extends "base.html" %}
-{% block nav-home %}active{% endblock %}
 
-{% block body %}
-    <div class="container">
-        <div>
-            <h1>
-                Farm Log
-            </h1>
+{% load observation_tags %}
+{% load farm_log_core_tags %}
+
+
+{% block  body%}
+    <div class="container-fluid>">
+        <div class="row">
+            <div class="log-header col-xs-12 bb-blue-background">
+                <h1 class="text-center">Work and Observation Logs</h1>
+                <p>This website is the front face to Bonnie Blue Farms and Nursery's logs which are
+                    collected using a framework we've built to track and manage a farm entirely
+                    from our smart phones.
+                </p>
+                <p>
+                    You are on the front seat of the raw information that Bonnie Blue is collecting
+                    to make a better farm and better understand the world its growing in.
+                    Very minimal support will be given for the front end of this, as this code
+                    and site was created primarily for office and farm use.
+                </p>
+            </div>
         </div>
-        <div>
-            <h1>
-                Daily Reports
-            </h1>
-            {% for summary in daily_reports %}
-                {% include "day_summary.html" %}
-            {% endfor %}
+        <div class="text-center">
+            <hr>
         </div>
+        <div class="log-settings row">
+            <style>
+                .slow .toggle-group { transition: left 0.7s; -webkit-transition: left 0.7s; }
+                .fast .toggle-group { transition: left 0.1s; -webkit-transition: left 0.1s; }
+                .quick .toggle-group { transition: none; -webkit-transition: none; }
+            </style>
+            <div class="col-xs-12">
+
+                <label class="checkbox-inline">
+                    <input id="work-toggle" data-on="Work" data-off="Work" type="checkbox" checked data-toggle="toggle" data-style="quick">
+                </label>
+                <label class="checkbox-inline">
+                    <input id="weather-toggle" data-on="Weather" data-off="Weather" type="checkbox" checked data-toggle="toggle" data-style="quick" data-onstyle="success">
+                </label>
+                <label class="checkbox-inline">
+                    <input id="harvest-toggle" data-on="Harvests" data-off="Harvests" type="checkbox" checked data-toggle="toggle" data-style="quick" data-onstyle="info">
+                </label>
+            </div>
+        </div>
+        {% for report in daily_reports %}
+            <div class="log-day bb-green-background">
+                <div class="row log-day-header bb-blue-background">
+                    <h2 class="col-xs-12 text-center">
+                        {{ report.date|date:"M d Y D" }}
+                    </h2>
+                </div>
+                <div class="log-day-body">
+                    {% if report.temperature_readings or report.weather_readings %}
+                        <div class="row weather">
+                            {% if report.weather_readings %}
+                                {% for reading in report.weather_readings %}
+                                    <span aria-hidden="true" class="col-xs-1 weather-icon {{ reading|get_weather_symbol }}"></span>
+                                {% endfor %}
+                            {% else %}
+                            {% endif %}
+                            {% if report.temperature_readings %}
+                                <span class="col-xs-6">{{  report.temperature_readings | get_high_low_string }}</span>
+                            {% else %}
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% if report.work_completed %}
+                        <div class="work">
+                            <h4>Work</h4>
+                             {% for workSummary in report.work_completed %}
+                                <h5>{{ workSummary.project_name }}</h5>
+                                <ul>
+                                    {% for work in workSummary.work_items %}
+                                    <li>{{ work.datetime|get_time }} - {{ work.work|get_summary }}</li>
+                                    {% endfor %}
+                                </ul>
+                             {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% if report.harvests %}
+                        <div class="harvest">
+                            <h4>Harvests</h4>
+                            <ul>
+                                {% for harvest in report.harvests %}
+                                <li>
+                                    {{ harvest }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function(){
+            var workToggle = $('#work-toggle');
+            workToggle.parent().click(function(){
+                $('.work').toggle();
+            });
+            var weatherToggle = $('#weather-toggle');
+            weatherToggle.parent().click(function(){
+                $('.weather').toggle();
+            });
+            var harvestToggle = $('#harvest-toggle');
+            harvestToggle.parent().click(function(){
+                $('.harvest').toggle();
+            });
+        });
+    </script>
 {% endblock %}
