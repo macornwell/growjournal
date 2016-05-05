@@ -27,7 +27,7 @@ SECRET_KEY = 'wkvd(%bu1(d3bvj7eg^%$h7-%qv()humsrh9*nzh_zj^5zvv(l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', ''))
 
-ALLOWED_HOSTS = ['localhost', 'bbdev-1']
+ALLOWED_HOSTS = ['*',]
 LOCAL_HOST = os.environ.get('LOCAL_HOST')
 if LOCAL_HOST:
     ALLOWED_HOSTS.append(LOCAL_HOST)
@@ -123,6 +123,44 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+###########
+# LOGGING #
+###########
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
+                       'pathname=%(pathname)s lineno=%(lineno)s ' +
+                       'funcname=%(funcName)s %(message)s'),
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        }
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'testlogger': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
