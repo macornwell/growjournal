@@ -45,15 +45,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.humanize',
+    'core',
+    'farm_log',
     'rest_framework',
     'bootstrap3',
     'datetimewidget',
-    'farm_log',
     'work',
     'observations',
     'livestock',
     'plants',
-    'core',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -196,7 +196,7 @@ MEDIA_ROOT = '/media/'
 
 
 LOGIN_URL = '/api-auth/login/'
-LOGIN_REDIRECT_URL = '/worksite'
+LOGIN_REDIRECT_URL = '/'
 
 
 ###########

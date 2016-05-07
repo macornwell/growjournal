@@ -26,8 +26,8 @@ def home_with_page(request, page):
     data = {'daily_reports': []}
     for date in datesToReport:
         data['daily_reports'].append(get_daily_report(date))
-    data['next_page'] = page + 1
-    data['previous_page'] = page - 1
+    data['older_page'] = page + 1
+    data['newer_page'] = page - 1
     return render(template_name='home.html', context=data, request=request)
 
 
@@ -39,8 +39,8 @@ def worksite(request):
     data = {'daily_reports': []}
     for date in datesToReport:
         data['daily_reports'].append(get_daily_report(date))
-    data['next-page'] = 1
-    data['previous-page'] = 0
+    data['older_page'] = 1
+    data['newer_page'] = 0
     return render(template_name='worksite.html', context=data, request=request)
 
 
