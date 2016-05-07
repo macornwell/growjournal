@@ -60,9 +60,11 @@ class WeatherReading(BaseUserActivityModel):
     weather_reading_id = models.AutoField(primary_key=True)
     datetime = models.DateTimeField(default=timezone.now)
     state = models.CharField(max_length=1, choices=WEATHER_STATES)
+    temperature = models.DecimalField(decimal_places=2, max_digits=8)
+    unit = models.CharField(max_length=1, choices=TEMPERATURE_UNITS, default=TEMPERATURE_UNITS[0][0])
 
     def __str__(self):
-        return '{0} - {1}'.format(get_local_time_formatted(self.datetime), WEATHER_STATES_DICT[self.state])
+        return '{0} - {1} {2}'.format(get_local_time_formatted(self.datetime), self.temperature, WEATHER_STATES_DICT[self.state])
 
     @staticmethod
     def get_readings_by_date(date):

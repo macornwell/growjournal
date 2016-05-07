@@ -1,21 +1,12 @@
 from django.forms.models import ModelForm
-from observations.models import TemperatureReading, WeatherReading, Observation
+from observations.models import WeatherReading, Observation
 from datetimewidget.widgets import DateTimeWidget
-
-
-class TemperatureReadingForm(ModelForm):
-    class Meta:
-        model = TemperatureReading
-        fields = ['datetime', 'value', 'unit']
-        widgets = {
-            'datetime': DateTimeWidget(attrs={'id': "id-datetime"}, usel10n=True, bootstrap_version=3 )
-        }
 
 
 class WeatherReadingForm(ModelForm):
     class Meta:
         model = WeatherReading
-        fields = ['datetime', 'state']
+        fields = ['datetime', 'state', 'temperature', 'unit']
         widgets = {
             'datetime': DateTimeWidget(attrs={'id': "id-datetime"}, usel10n=True, bootstrap_version=3)
         }

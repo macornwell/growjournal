@@ -73,18 +73,10 @@
                                 </h2>
                             </div>
                             <div class="log-day-body">
-                                {% if report.temperature_readings or report.weather_readings %}
+                                {% if report.weather_readings %}
                                     <div class="weather" style="height:20px">
                                         {% if report.weather_readings %}
-                                            {% for reading in report.weather_readings %}
-                                                <span aria-hidden="true"
-                                                      class="col-xs-1 weather-icon {{ reading|get_weather_symbol }}"></span>
-                                            {% endfor %}
-                                        {% else %}
-                                        {% endif %}
-                                        {% if report.temperature_readings %}
-                                            <span class="col-xs-6">{{ report.temperature_readings | get_high_low_string }}</span>
-                                        {% else %}
+                                            {{ report.weather_readings|get_weather_html }}
                                         {% endif %}
                                     </div>
                                 {% endif %}
@@ -92,10 +84,10 @@
                                     <div class="work">
                                         <h4 class="full-bg-primary">Work</h4>
                                         {% for workSummary in report.work_completed %}
-                                            <h5>{{ workSummary.project_name }}</h5>
+                                            <b>{{ workSummary.project_name }}</b>
                                             {% for work in workSummary.work_items %}
                                                 <div class="summary-line">
-                                                    <span>{{ work.datetime|get_time }} - {{ work.work|get_summary }}</span>
+                                                    <span>&nbsp&nbsp&nbsp&nbsp{{ work.datetime|get_time }} - {{ work.work|get_summary }}</span>
                                                 <span>
 
                                             <button type="button" class="btn btn-success btn-xs pull-right"
@@ -131,7 +123,7 @@
                                 <div class="harvest">
                                     <h4 class="full-bg-danger">Harvests</h4>
                                     {% for harvest in report.harvests %}
-                                        <div class="summary-line"> - {{ harvest }}</div>
+                                        <div class="summary-line">&nbsp&nbsp&nbsp&nbsp{{ harvest }}</div>
                                     {% endfor %}
                                 </div>
                             {% endif %}
@@ -144,7 +136,7 @@
                                             {{ report.observations|length }} observations Taken
                                         </div>
                                         {% for ob in report.observations %}
-                                            <p>{{ ob.observation_date|get_time }} - {{ ob.observation|get_summary }}
+                                            <p>&nbsp&nbsp&nbsp&nbsp{{ ob.observation_date|get_time }} - {{ ob.observation|get_summary }}
                                                 <button type="button" class="btn btn-success btn-xs pull-right"
                                                         data-toggle="modal"
                                                         data-target="#observation_modal_{{ ob.observation_id }}">

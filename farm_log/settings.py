@@ -36,6 +36,7 @@ if LOCAL_HOST:
 # Application definition
 
 INSTALLED_APPS = [
+    'core',
     'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,9 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.humanize',
-    'core',
-    'farm_log',
     'rest_framework',
+    'farm_log',
     'bootstrap3',
     'datetimewidget',
     'work',
@@ -75,7 +75,7 @@ ROOT_URLCONF = 'farm_log.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates',],
+        'DIRS': [ os.path.join(BASE_DIR, 'templates'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'debug': DEBUG,
@@ -211,3 +211,19 @@ MESSAGE_TAGS = {
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 
 ###########
+
+
+######################
+# Weather Settings
+WEATHER_USERNAME = os.environ.get('WEATHER_USERNAME')
+WEATHER_CITY = os.environ.get('WEATHER_CITY')
+WEATHER_STATE = os.environ.get('WEATHER_STATE')
+WEATHER_KEY = os.environ.get('WEATHER_KEY')
+
+WEATHER_DATA = {WEATHER_USERNAME or 'macornwell': {
+    'wunder_key': WEATHER_KEY or 'cc622998c566839f',
+    'city': WEATHER_CITY or 'Bush',
+    'state': WEATHER_STATE or 'LA',
+}}
+
+#############################

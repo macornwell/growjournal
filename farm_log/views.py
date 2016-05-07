@@ -76,7 +76,6 @@ def get_daily_report(date):
     report = DailyReport()
     report.date = date
 
-    report.temperature_readings = TemperatureReading.get_readings_by_date(date)
     report.weather_readings = WeatherReading.get_readings_by_date(date)
     report.observations = Observation.get_observations_by_date(date)
     report.work_completed = _build_work_summary(date)
