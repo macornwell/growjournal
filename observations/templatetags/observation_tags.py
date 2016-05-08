@@ -47,14 +47,15 @@ def get_high_low_string(weatherReadings):
 
 @register.filter
 def get_weather_html(weatherReadings):
-    morning = _get_weather_reading_between_times(weatherReadings, 4, 10)
-    midDay = _get_weather_reading_between_times(weatherReadings, 11, 15)
-    evening = _get_weather_reading_between_times(weatherReadings, 16, 22)
-    html = _get_formatted_weather_string(morning, 'Morning') + _get_formatted_weather_string(midDay, 'Mid-Day') + _get_formatted_weather_string(evening, 'Evening')
+    low = min(weatherReadings, key=lambda x: x.temperature)
+    high = max(weatherReadings, key=lambda x: x.temperature)
+    if high == low:
+        high = None
+    html = _get_formatted_weather_string(low, 'Low') + _get_formatted_weather_string(high, 'High')
     return mark_safe(format_html(html))
 
 def _get_formatted_weather_string(reading, timeOfDayString):
-    formattedString = """<span class="col-xs-4">
+    formattedString = """<span class="col-xs-6">
                             {0}:
                         """.format(timeOfDayString)
     if reading:
