@@ -67,22 +67,20 @@
                 <div class="log-body bb-green-background">
                     {% for report in daily_reports %}
                         <div class="log-day">
-                            <div class="log-day-header ">
-                                <h2 class="text-center bb-blue-background">
+                                <h2 class="text-center bb-blue-background log-section-header">
                                     {{ report.date|date:"M d Y D" }}
                                 </h2>
-                            </div>
+                            {% if report.weather_readings %}
+                                <div class="weather">
+                                    {% if report.weather_readings %}
+                                        {{ report.weather_readings|get_weather_html }}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
                             <div class="log-day-body">
-                                {% if report.weather_readings %}
-                                    <div class="weather" style="height:20px">
-                                        {% if report.weather_readings %}
-                                            {{ report.weather_readings|get_weather_html }}
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
                                 {% if report.work_completed %}
                                     <div class="work">
-                                        <h4 class="full-bg-primary">Work</h4>
+                                        <h4 class="full-bg-primary log-section-header">Work</h4>
                                         {% for workSummary in report.work_completed %}
                                             <b>{{ workSummary.project_name }}</b>
                                             {% for work in workSummary.work_items %}
@@ -121,7 +119,7 @@
                             </div>
                             {% if report.harvests %}
                                 <div class="harvest">
-                                    <h4 class="full-bg-danger">Harvests</h4>
+                                    <h4 class="full-bg-danger log-section-header">Harvests</h4>
                                     {% for harvest in report.harvests %}
                                         <div class="summary-line">&nbsp&nbsp&nbsp&nbsp{{ harvest }}</div>
                                     {% endfor %}
@@ -130,7 +128,7 @@
                             {% if report.observations %}
                                 <div class="observation">
                                     <div>
-                                        <h4 class="full-bg-info">Observations</h4>
+                                        <h4 class="full-bg-info log-section-header">Observations</h4>
 
                                         <div class="summary-line">
                                             {{ report.observations|length }} observations Taken
