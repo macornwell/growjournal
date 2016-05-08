@@ -1,3 +1,4 @@
+import datetime
 from datetime import timedelta
 from django.shortcuts import render
 import django.utils.timezone as timezone
@@ -51,6 +52,7 @@ def _get_dates_to_report(page):
     ending = starting + LOG_DAYS_PER_PAGE
     for i in range(starting, ending):
         newDate = now - timedelta(days=i)
+        newDate = datetime.date(newDate.year, newDate.month, newDate.day)
         datesToReport.append(newDate)
     return datesToReport
 
@@ -76,8 +78,8 @@ def get_daily_report(date):
     report = DailyReport()
     report.date = date
 
-    report.weather_readings = WeatherReading.get_readings_by_date(date)
-    report.observations = Observation.get_observations_by_date(date)
+    report.weather_readings = list(WeatherReading.get_readings_by_date(date))
+    report.observations = list(Observation.get_observations_by_date(date))
     report.work_completed = _build_work_summary(date)
     report.eggs = EggCollection.get_total_eggs_collected_on_date(date)
     report.harvests = Harvest.get_harvests_by_date(date)
