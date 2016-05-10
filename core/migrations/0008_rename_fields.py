@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.RenameField(
             model_name='Feedback',
             new_name='feedback_id',
-            old_name='note_id',
+            old_name='notes_id',
         ),
         migrations.RenameField(
             model_name='Feedback',
