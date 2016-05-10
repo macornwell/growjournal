@@ -1,10 +1,11 @@
 {% extends "add_model.html" %}
 {% block BodyExtended %}
     <div>
+        <h3>Previous Feedback</h3>
         <ul>
         {% for fBack in feedback %}
             <li>
-            {{ fBack.feedback }}
+            <span>{{ fBack.datetime }} : </span><span>{{ fBack.feedback }}</span>
             </li>
         {% endfor %}
         </ul>

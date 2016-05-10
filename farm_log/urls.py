@@ -19,8 +19,8 @@ urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^(?P<page>-?\d+)/$', home_with_page, name='home'),
     #url(r'^(?P<page>.+)/$', home, name='home'),
-    url(r'^work-site/$', worksite, name='work-site'),
-    url(r'^admin-site/', admin.site.urls, name='admin'),
+    #url(r'^work-site/$', worksite, name='work-site'),
+    url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^login/$', login, {'template_name': 'admin/login.html'})
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
