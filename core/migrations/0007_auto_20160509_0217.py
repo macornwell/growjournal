@@ -19,14 +19,4 @@ class Migration(migrations.Migration):
             old_name='note'
 
         ),
-        migrations.RenameField(
-            model_name='Feedback',
-            new_name='feedback_id',
-            old_name='note_id',
-        ),
-        migrations.RenameField(
-            model_name='Feedback',
-            new_name='feedback',
-            old_name='notes',
-        ),
     ]
