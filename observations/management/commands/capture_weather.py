@@ -1,3 +1,20 @@
+"""
+A command for reaching out to wunderground to get weather values that we insert regularly.
+
+Example of use.
+WEATHER_USERNAME = os.environ.get('WEATHER_USERNAME')
+WEATHER_CITY = os.environ.get('WEATHER_CITY')
+WEATHER_STATE = os.environ.get('WEATHER_STATE')
+WEATHER_KEY = os.environ.get('WEATHER_KEY')
+
+WEATHER_DATA = {WEATHER_USERNAME: {
+    'wunder_key': WEATHER_KEY or 'cc622998c566839f',
+    'city': WEATHER_CITY or 'Bush',
+    'state': WEATHER_STATE or 'LA',
+}}
+"""
+
+
 import json
 import urllib.request
 from django.contrib.auth.models import User
@@ -17,14 +34,20 @@ WUNDERWEATHER_TO_WEATHER_STATE = {
     }
 
 
+
 class Command(BaseCommand):
-    help = "Pulls weather information from Wunderground and logs it."
+    help = """
+                Pulls weather information from Wunderground and logs it. View the source code
+                for detailed information on formats.
+           """
 
     def handle(self, *args, **options):
         self.stdout.write('Pulling weather')
         for username in WEATHER_DATA:
+            # If there isn't a username, we assume there is no data to process.
             if not username:
-                raise Exception('No username provided')
+                print('No Wunderground Username was found. Ignoring.')
+                continue
             user = User.objects.filter(username=username).first()
             if not user:
                 raise Exception('Username {0} not found'.format(username))

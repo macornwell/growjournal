@@ -220,7 +220,7 @@ WEATHER_CITY = os.environ.get('WEATHER_CITY')
 WEATHER_STATE = os.environ.get('WEATHER_STATE')
 WEATHER_KEY = os.environ.get('WEATHER_KEY')
 
-WEATHER_DATA = {WEATHER_USERNAME or 'macornwell': {
+WEATHER_DATA = {WEATHER_USERNAME: {
     'wunder_key': WEATHER_KEY or 'cc622998c566839f',
     'city': WEATHER_CITY or 'Bush',
     'state': WEATHER_STATE or 'LA',

@@ -1,12 +1,12 @@
 from django.forms import ModelForm
-from core.models import Note
+from core.models import Feedback
 from datetimewidget.widgets import DateTimeWidget
 
 
-class NoteForm(ModelForm):
+class FeedbackForm(ModelForm):
     class Meta:
-        model = Note
-        fields = ['datetime', 'notes']
+        model = Feedback
+        fields = ['datetime', 'feedback']
         widgets = {
             'datetime': DateTimeWidget(attrs={'id': "id-datetime"}, usel10n=True, bootstrap_version=3 )
         }

@@ -1,6 +1,6 @@
 from django.conf.urls import url
-from core.views import add_note
+from core.views import add_feedback
 
 urlpatterns = [
-    url('^add/core/note', name='add_note', view=add_note),
+    url('^add/core/feedback', name='add_feedback', view=add_feedback),
 ]

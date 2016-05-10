@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
-from core.models import Note
-from core.forms import NoteForm
+from core.models import Feedback
+from core.forms import FeedbackForm
 
 
 def get_add_model_form(request, templatePath, modelType, modelTypeFriendlyName, datePropertyName, formType, customValidator=None, additionalDataGenerator=None):
@@ -39,8 +39,9 @@ def get_add_model_form(request, templatePath, modelType, modelTypeFriendlyName, 
     return render(request, templatePath, data)
 
 
-def add_note(request):
+def add_feedback(request):
     user = request.user
-    notesForUser = Note.objects.filter(user_id=user.id)
-    generator = lambda: (('notes', notesForUser),)
-    return get_add_model_form(request, 'core/add_note.html', Note, 'Note', 'datetime', NoteForm, additionalDataGenerator=generator)
+    #Replace with QueryLayer.get_feedback_by_user_id
+    feedbackForByUser = Feedback.objects.filter(user_id=user.id)
+    generator = lambda: (('feedback', feedbackForByUser),)
+    return get_add_model_form(request, 'core/add_feedback.html', Feedback, 'Feedback', 'datetime', FeedbackForm, additionalDataGenerator=generator)

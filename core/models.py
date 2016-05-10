@@ -47,10 +47,10 @@ class Unit(BaseModel):
         return self.name
 
 
-class Note(BaseUserActivityModel):
-    notes_id = models.AutoField(primary_key=True)
-    notes = models.TextField()
+class Feedback(BaseUserActivityModel):
+    feedback_id = models.AutoField(primary_key=True)
+    feedback = models.TextField()
     datetime = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.notes
+        return self.feedback
