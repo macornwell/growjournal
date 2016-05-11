@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
                 ('species_id', models.AutoField(primary_key=True, serialize=False)),
                 ('latin_name', models.CharField(null=True, max_length=30, blank=True)),
                 ('name', models.CharField(max_length=30)),
-                ('genius', models.ForeignKey(to='plants.Genius')),
+                ('genius', models.ForeignKey(to='plants.Genius', blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
@@ -164,7 +164,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='cultivar',
             name='species',
-            field=models.ForeignKey(to='plants.Species'),
+            field=models.ForeignKey(to='plants.Species', null=True, blank=True),
         ),
         migrations.AddField(
             model_name='bloom',

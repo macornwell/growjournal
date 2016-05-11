@@ -23,7 +23,7 @@ class Genius(BaseModel):
 
 class Species(BaseModel):
     species_id = models.AutoField(primary_key=True)
-    genius = models.ForeignKey(Genius)
+    genius = models.ForeignKey(Genius, blank=True, null=True)
     latin_name = models.CharField(max_length=30, blank=True, null=True)
     name = models.CharField(max_length=30)
 
@@ -36,7 +36,7 @@ class Species(BaseModel):
 
 class Cultivar(BaseModel):
     plant_id = models.AutoField(primary_key=True)
-    species = models.ForeignKey(Species)
+    species = models.ForeignKey(Species, blank=True, null=True)
     name = models.CharField(max_length=40)
 
     def __str__(self):
