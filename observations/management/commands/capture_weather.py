@@ -22,8 +22,6 @@ from django.core.management import BaseCommand
 from observations.settings import WEATHER_DATA
 from observations.models import WeatherReading
 
-URL_FORMAT = 'http://api.wunderground.com/api/{0}/conditions/q/{1}/{2}.json'
-
 
 WUNDERWEATHER_TO_WEATHER_STATE = {
     'Overcast': 'o',
@@ -52,16 +50,12 @@ class Command(BaseCommand):
             if not user:
                 raise Exception('Username {0} not found'.format(username))
             data = WEATHER_DATA[username]
-            state = data['state']
-            if not state:
-                raise Exception('No State provided')
-            city = data['city']
-            if not city:
-                raise Exception('No city provided')
+            url = data['url']
+            if not url:
+                raise Exception('No URL provided')
             key = data['wunder_key']
             if not key:
                 raise Exception('No key provided')
-            url = URL_FORMAT.format(key, state, city)
             response = urllib.request.urlopen(url)
             stringResponse = response.readall().decode('utf-8')
             obj = json.loads(stringResponse)

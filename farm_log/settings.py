@@ -216,14 +216,12 @@ DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer
 ######################
 # Weather Settings
 WEATHER_USERNAME = os.environ.get('WEATHER_USERNAME')
-WEATHER_CITY = os.environ.get('WEATHER_CITY')
-WEATHER_STATE = os.environ.get('WEATHER_STATE')
+WEATHER_URL = os.environ.get('URL')
 WEATHER_KEY = os.environ.get('WEATHER_KEY')
 
 WEATHER_DATA = {WEATHER_USERNAME: {
     'wunder_key': WEATHER_KEY or 'cc622998c566839f',
-    'city': WEATHER_CITY or 'Bush',
-    'state': WEATHER_STATE or 'LA',
+    'url': WEATHER_URL or 'http://api.wunderground.com/api/cc622998c566839f/conditions/q/pws:KLACOVIN33.json'
 }}
 
 #############################
