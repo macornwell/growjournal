@@ -103,7 +103,18 @@ WSGI_APPLICATION = 'farm_log.wsgi.application'
 
 default = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 DATABASES = {}
-DATABASES['default'] = dj_database_url.config(default=default)
+dbUsername = bool(os.environ.get('DATABASE_USERNAME', ''))
+dbPassword = bool(os.environ.get('DATABASE_PASSWORD', ''))
+dbHost = bool(os.environ.get('DATABASE_HOST', ''))
+
+DATABASES['default'] = {
+    'ENGINE': 'mysql.connector.django',
+    'USER': dbUsername,
+    'PASSWORD': dbPassword,
+    'PORT': 3306,
+    'HOST': dbHost,
+    'NAME': 'farmlog',
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
