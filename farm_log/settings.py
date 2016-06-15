@@ -112,7 +112,7 @@ DATABASES['default'] = {
     #'ENGINE': 'mysql.connector.django',
     'USER': dbUsername,
     'PASSWORD': dbPassword,
-    'PORT': 3306,
+    'PORT': '3306',
     'HOST': dbHost,
     'NAME': 'farmlog',
 }
