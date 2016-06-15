@@ -10,4 +10,5 @@ psycopg2==2.6.1
 pytz==2016.4
 whitenoise==2.0.6
 git+https://github.com/bonnieblueag/django-graphos.git
-git+https://github.com/multiplay/mysql-connector-python
+--allow-external git+https://github.com/multiplay/mysql-connector-python
+
