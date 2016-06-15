@@ -103,9 +103,9 @@ WSGI_APPLICATION = 'farm_log.wsgi.application'
 
 default = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
 DATABASES = {}
-dbUsername = bool(os.environ.get('DATABASE_USERNAME', ''))
-dbPassword = bool(os.environ.get('DATABASE_PASSWORD', ''))
-dbHost = bool(os.environ.get('DATABASE_HOST', ''))
+dbUsername = os.environ.get('DATABASE_USERNAME', '')
+dbPassword = os.environ.get('DATABASE_PASSWORD', '')
+dbHost = os.environ.get('DATABASE_HOST', '')
 
 DATABASES['default'] = {
     'ENGINE': 'django.db.backends.mysql',
