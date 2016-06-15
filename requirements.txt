@@ -1,4 +1,4 @@
-setuptools
+pip==8.1.2
 dj-database-url==0.4.0
 Django==1.8.12
 django-admin-bootstrapped==2.5.7
