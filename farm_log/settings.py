@@ -108,7 +108,8 @@ dbPassword = bool(os.environ.get('DATABASE_PASSWORD', ''))
 dbHost = bool(os.environ.get('DATABASE_HOST', ''))
 
 DATABASES['default'] = {
-    'ENGINE': 'mysql.connector.django',
+    'ENGINE': 'django.db.backends.mysql',
+    #'ENGINE': 'mysql.connector.django',
     'USER': dbUsername,
     'PASSWORD': dbPassword,
     'PORT': 3306,
