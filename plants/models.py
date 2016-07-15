@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from core.models import BaseModel, BaseUserActivityModel, Project, Unit, get_objects_with_datetime_property_on_given_date
+from core.models import BaseModel, BaseUserActivityModel, Project, Unit, get_objects_with_datetime_property_on_given_date, AFFINITY_STATES
 from core.utils import get_local_time_formatted
 from plants.mixins import SpeciesOrCultivarMixin
 
@@ -12,8 +12,8 @@ General Models
 """
 
 
-class Genius(BaseModel):
-    genius_id = models.AutoField(primary_key=True)
+class Genus(BaseModel):
+    genus_id = models.AutoField(primary_key=True)
     latin_name = models.CharField(max_length=30, unique=True, blank=True)
     name = models.CharField(max_length=30, unique=True)
 
@@ -23,7 +23,7 @@ class Genius(BaseModel):
 
 class Species(BaseModel):
     species_id = models.AutoField(primary_key=True)
-    genius = models.ForeignKey(Genius, blank=True, null=True)
+    genus = models.ForeignKey(Genus, blank=True, null=True)
     latin_name = models.CharField(max_length=30, blank=True, null=True)
     name = models.CharField(max_length=30)
 
@@ -31,7 +31,7 @@ class Species(BaseModel):
         return self.latin_name or self.name
 
     class Meta:
-        unique_together = (("genius", "name"),)
+        unique_together = (("genus", "name"),)
 
 
 class Cultivar(BaseModel):
@@ -70,6 +70,7 @@ class Harvest(BaseUserActivityModel):
     details = models.CharField(max_length=50, blank=True, null=True)
     amount = models.DecimalField(max_digits=5, decimal_places=2)
     unit = models.ForeignKey(Unit)
+    notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
         if not self.details:
@@ -81,9 +82,6 @@ class Harvest(BaseUserActivityModel):
     @staticmethod
     def get_harvests_by_date(date):
         return get_objects_with_datetime_property_on_given_date(Harvest, date)
-
-
-
 
 
 class Watering(BaseUserActivityModel):
@@ -122,6 +120,7 @@ class PlantProductivityReport(BaseUserActivityModel, SpeciesOrCultivarMixin):
     species = models.ForeignKey(Species, blank=True, null=True)
     cultivar = models.ForeignKey(Cultivar, blank=True, null=True)
     productivity = models.CharField(max_length=1, choices=PLANT_PRODUCTIVITY_LEVELS)
+    notes = models.TextField(blank=True, null=True)
 
 
 class Bloom(BaseUserActivityModel, SpeciesOrCultivarMixin):
@@ -133,3 +132,13 @@ class Bloom(BaseUserActivityModel, SpeciesOrCultivarMixin):
 
     def __str__(self):
         return '{0} - {1}'.format(get_local_time_formatted(self.start), self.get_name())
+
+
+class PlantReport(BaseUserActivityModel, SpeciesOrCultivarMixin):
+    plant_report_id = models.AutoField(primary_key=True)
+    datetime = models.DateTimeField(default=timezone.now)
+    species = models.ForeignKey(Species, blank=True, null=True)
+    cultivar = models.ForeignKey(Cultivar, blank=True, null=True)
+    affinity = models.CharField(max_length=3, default='neu', choices=AFFINITY_STATES)
+    summary = models.CharField(max_length=50, blank=True, null=True)
+    report_details = models.TextField()

@@ -1,6 +1,6 @@
 from django.utils import timezone
 from django.db import models
-from core.models import BaseUserActivityModel, Project, get_objects_with_datetime_property_on_given_date
+from core.models import BaseUserActivityModel, Project, get_objects_with_datetime_property_on_given_date, AFFINITY_STATES
 from core.utils import get_summary_with_datetime, get_local_time_formatted
 
 
@@ -28,6 +28,7 @@ class Observation(BaseUserActivityModel):
     observation_id = models.AutoField(primary_key=True)
     project = models.ForeignKey(Project, blank=True, null=True)
     observation_date = models.DateTimeField(default=timezone.now)
+    affinity = models.CharField(max_length=3, default='neu', choices=AFFINITY_STATES)
     summary = models.CharField(max_length=50, blank=True, null=True)
     observation = models.TextField()
 

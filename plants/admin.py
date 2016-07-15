@@ -1,11 +1,11 @@
 from django.contrib import admin
-from plants.models import Bloom, Cultivar, Genius, Harvest, \
+from plants.models import Bloom, Cultivar, Genus, Harvest, \
     PlantProductivityReport, Resource, Species, Watering
 
 
 admin.site.register(Bloom)
 admin.site.register(Cultivar)
-admin.site.register(Genius)
+admin.site.register(Genus)
 admin.site.register(Harvest)
 admin.site.register(PlantProductivityReport)
 admin.site.register(Resource)

@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from plants.models import Harvest, Watering, Bloom, PlantProductivityReport, Resource
-from plants.forms import PlantProductivityForm, BloomForm, HarvestForm, WateringForm, ResourceForm, cultivar_species_validator
+from plants.models import Harvest, Watering, Bloom, PlantProductivityReport, Resource, PlantReport
+from plants.forms import PlantProductivityForm, BloomForm, HarvestForm, WateringForm, ResourceForm, cultivar_species_validator, PlantReportForm
 from core.views import get_add_model_form
 
 ADD_PLANTS_TEMPLATE = 'plants/add_plant_model.html'
@@ -19,6 +19,10 @@ def add_watering(request):
 
 def add_plant_productivity(request):
     return get_add_model_form(request, ADD_PLANTS_TEMPLATE, PlantProductivityReport, 'Plant Productivity', 'datetime', PlantProductivityForm, customValidator=cultivar_species_validator)
+
+
+def add_plant_report(request):
+    return get_add_model_form(request, ADD_PLANTS_TEMPLATE, PlantReport, 'Plant Report', 'datetime', PlantReportForm, customValidator=cultivar_species_validator)
 
 
 def add_bloom(request):

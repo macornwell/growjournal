@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from plants.views import add_harvest, add_watering, add_plant_productivity, add_bloom, add_resource
+from plants.views import add_harvest, add_watering, add_plant_productivity, add_bloom, add_resource, add_plant_report
 
 urlpatterns = [
     url('^add/plants/resource', name='add_resource', view=add_resource),
@@ -7,4 +7,5 @@ urlpatterns = [
     url('^add/plants/watering', name='add_watering', view=add_watering),
     url('^add/plants/productivity', name='add_plant_productivity', view=add_plant_productivity),
     url('^add/plants/bloom', name='add_bloom', view=add_bloom),
+    url('^add/plants/report', name='add_plant_report', view=add_plant_report),
 ]

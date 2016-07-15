@@ -39,11 +39,11 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Genius',
+            name='Genus',
             fields=[
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('genius_id', models.AutoField(primary_key=True, serialize=False)),
+                ('genus_id', models.AutoField(primary_key=True, serialize=False)),
                 ('latin_name', models.CharField(unique=True, max_length=30, blank=True)),
                 ('name', models.CharField(unique=True, max_length=30)),
             ],
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
                 ('species_id', models.AutoField(primary_key=True, serialize=False)),
                 ('latin_name', models.CharField(null=True, max_length=30, blank=True)),
                 ('name', models.CharField(max_length=30)),
-                ('genius', models.ForeignKey(to='plants.Genius', blank=True, null=True)),
+                ('genus', models.ForeignKey(to='plants.Genus', blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
@@ -183,7 +183,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='species',
-            unique_together=set([('genius', 'name')]),
+            unique_together=set([('genus', 'name')]),
         ),
         migrations.AlterUniqueTogether(
             name='cultivar',

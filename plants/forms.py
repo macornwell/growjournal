@@ -1,13 +1,17 @@
 from django.contrib import messages
+from django import forms
 from django.forms.models import ModelForm
-from plants.models import Harvest, Bloom, PlantProductivityReport, Watering, Resource
+from core.models import Project
+from plants.models import Harvest, Bloom, PlantProductivityReport, Watering, Resource, PlantReport, Species, Cultivar, Genus
 from datetimewidget.widgets import DateTimeWidget
 
 
 class HarvestForm(ModelForm):
+    resources = forms.ModelChoiceField(queryset=Resource.objects.order_by('name'))
+
     class Meta:
         model = Harvest
-        fields = ['resource', 'datetime', 'details', 'amount', 'unit']
+        fields = ['resource', 'datetime', 'details', 'amount', 'unit', 'notes']
         widgets = {
             'datetime': DateTimeWidget(attrs={'id': "id-datetime"}, usel10n=True, bootstrap_version=3 )
         }
@@ -24,15 +28,20 @@ class BloomForm(ModelForm):
 
 
 class PlantProductivityForm(ModelForm):
+    species = forms.ModelChoiceField(queryset=Species.objects.order_by('latin_name'), required=False)
+    cultivar = forms.ModelChoiceField(queryset=Cultivar.objects.order_by('name'), required=False)
+
     class Meta:
         model = PlantProductivityReport
-        fields = ['species', 'datetime', 'cultivar', 'productivity']
+        fields = ['species', 'cultivar', 'datetime', 'productivity', 'notes']
         widgets = {
             'datetime': DateTimeWidget(attrs={'id': "id-datetime"}, usel10n=True, bootstrap_version=3 )
         }
 
 
 class WateringForm(ModelForm):
+    project = forms.ModelChoiceField(queryset=Project.objects.order_by('name'))
+
     class Meta:
         model = Watering
         fields = ['project', 'datetime', 'target']
@@ -42,9 +51,26 @@ class WateringForm(ModelForm):
 
 
 class ResourceForm(ModelForm):
+    species = forms.ModelChoiceField(queryset=Species.objects.order_by('latin_name'), required=False)
+    cultivar = forms.ModelChoiceField(queryset=Cultivar.objects.order_by('name'), required=False)
+
     class Meta:
         model = Resource
         fields = ['name', 'species', 'cultivar', 'description']
+
+
+class PlantReportForm(ModelForm):
+    species = forms.ModelChoiceField(queryset=Species.objects.order_by('latin_name'), required=False)
+    cultivar = forms.ModelChoiceField(queryset=Cultivar.objects.order_by('name'), required=False)
+
+
+    class Meta:
+        model = PlantReport
+        fields = ['datetime', 'species', 'cultivar', 'affinity', 'summary', 'report_details']
+        widgets = {
+            'datetime': DateTimeWidget(attrs={'id': "id-datetime"}, usel10n=True, bootstrap_version=3 )
+        }
+
 
 def cultivar_species_validator(request, form):
     cultivar = form.cleaned_data['cultivar']

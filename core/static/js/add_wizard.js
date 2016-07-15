@@ -8,7 +8,7 @@ Knockout.validation
  */
 
 (function() {
-  var AddWizard, _easyData, ref, root;
+  var AddWizard, WizardPane, _easyData, ref, root;
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
@@ -16,14 +16,41 @@ Knockout.validation
 
   _easyData = new farm_log_data.EasyRestData();
 
+  WizardPane = (function() {
+    function WizardPane(name1, type1, isRequired1) {
+      this.name = name1;
+      this.type = type1;
+      this.isRequired = isRequired1;
+      this.value = ko.observable();
+    }
+
+    return WizardPane;
+
+  })();
+
   AddWizard = (function() {
     function AddWizard(objectName) {
       this.objectName = objectName;
+      this.panes = ko.observableArray();
+      ({
+        addPane: (function(_this) {
+          return function(name, type, isRequired) {
+            return _this.panes.push(new WizardPane(name, type, isRequired));
+          };
+        })(this),
+        selectPaneTemplate: (function(_this) {
+          return function(type) {
+            return type;
+          };
+        })(this)
+      });
     }
 
     return AddWizard;
 
   })();
+
+  root.farm_log.AddWizard = AddWizard;
 
 }).call(this);
 

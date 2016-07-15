@@ -2,6 +2,7 @@ from django.db import models
 from core.models import BaseUserActivityModel, BaseModel, get_objects_with_datetime_property_on_given_date
 from core.utils import get_local_time_formatted
 from django.utils import timezone
+from observations.models import AFFINITY_STATES
 
 
 class EggCollection(BaseUserActivityModel):
@@ -21,13 +22,9 @@ class EggCollection(BaseUserActivityModel):
         return '{0} - {1} eggs'.format(get_local_time_formatted(self.datetime), self.amount)
 
 
-class Animal(BaseModel):
-    name = models.CharField(max_length=50)
-
-
-class AnimalMovement(BaseUserActivityModel):
-    animal = models.ForeignKey(Animal)
-    datetime = models.DateTimeField()
-    fromArea = models.CharField(max_length=50)
-    toArea = models.CharField(max_length=50)
-
+class AnimalReport(BaseUserActivityModel):
+    animal_report_id = models.AutoField(primary_key=True)
+    datetime = models.DateTimeField(default=timezone.now)
+    affinity = models.CharField(max_length=3, default='neu', choices=AFFINITY_STATES)
+    summary = models.CharField(max_length=50, blank=True, null=True)
+    report_details = models.TextField()

@@ -44,7 +44,7 @@ def farm_log_logout(request, user):
                                {user}
                                 <b class="caret"></b>
                             </a>
-                            <ul class="dropdown-menu" role="menu">
+                            <ul class="dropdown-menu nav-submenu" role="menu">
                                 <li role="presentation">
                                     <a class="btn btn-lg" href='{href}?next={next}'>Log out</a></li>
                                 </li>

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}
+    Add {{ add_model_type }}
+{% endblock %}
+{% block body %}
+    {% load bootstrap3 %}
+    {% bootstrap_messages %}
+
+    Last {{ add_model_type}}: {{ last_object }}
+    <form action="" method="post" class="form">
+        {% csrf_token %}
+        <ul data-bind="template: { name: selectPaneTemplate,
+                                   foreach: panes">
+        </ul>
+
+        {% buttons %}
+            <button type="submit" class="btn btn-primary wizard-submit">
+                {% bootstrap_icon "star" %} Submit
+            </button>
+        {% endbuttons %}
+    </form>
+    {% block BodyExtended %}
+    {% endblock %}
+{% endblock %}
+{% block scripts %}
+    <script type="application/javascript" src="wizard_add.html"></script>
+    <script type="text/html" id="text">
+        <input data-binding="value: value, attr: {name: name}">
+    </script>
+    <script type="text/html" id="textarea">
+        <textarea data-binding="value: value, attr: {name: name}"></textarea>
+    </script>
+    <script type="text/html" id="dropdown">
+        <select data-binding="attr: {name: name}"></select>
+    </script>
+    <script type="application/javascript">
+        $(document).ready(function(){
+            var data = {};
+            var wizard = new farm_log.AddWizard();
+            {% for formLine in formData %}
+                wizard.addPane("{{ form.name }}", "{{ form.type }}");
+            {% endfor %}
+            ko.applyBindings(wizard);
+        });
+    </script>
+{% endblock %}

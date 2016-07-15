@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+AFFINITY_STATES = (
+    ('pos', 'Positive'),
+    ('neu', 'Neutral'),
+    ('neg', 'Negative'),
+)
+
 
 def get_objects_with_datetime_property_on_given_date(modelClass, date):
     return modelClass.objects.filter(datetime__year=date.year,
@@ -51,6 +57,7 @@ class Feedback(BaseUserActivityModel):
     feedback_id = models.AutoField(primary_key=True)
     feedback = models.TextField()
     datetime = models.DateTimeField(default=timezone.now)
+    closed_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.feedback
