@@ -7,7 +7,7 @@ from datetimewidget.widgets import DateTimeWidget
 
 
 class HarvestForm(ModelForm):
-    resources = forms.ModelChoiceField(queryset=Resource.objects.order_by('name'))
+    resource = forms.ModelChoiceField(queryset=Resource.objects.order_by('name'))
 
     class Meta:
         model = Harvest
