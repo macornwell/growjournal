@@ -4,8 +4,6 @@ from django.shortcuts import render
 import django.utils.timezone as timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from graphos.renderers.gchart import LineChart
-from graphos.sources.model import SimpleDataSource
 
 
 LOG_DAYS_PER_PAGE = 5
