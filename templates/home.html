@@ -2,13 +2,26 @@
 {% load rest_framework %}
 {% load staticfiles %}
 
-{% load observation_tags %}
-{% load farm_log_core_tags %}
+{% load grow_journal_core_tags %}
 
+{% block title %}Grow Journal - Record Your Observations and Interactions{% endblock %}
 
 {% block  body %}
 
     <div class="">
+        <div class="log col-xs-12 col-md-offset-3 col-md-6">
+            <h1>Grow Journal</h1>
+            <p>
+                My children, family, friends, and community need the best information about growing healthy food.
+            </p>
+            <p>
+                By recording our growing experiences we are able to communicate what we are doing so we are offered the opportunity to piece together our past, present and future. We know doing this with like minded people and being enabled by computers, creates a powerful technology never before seen.
+            </p>
+            <p>
+                The Grow Journal platform enables growers everywhere the ability to digitally log, store and analyze their most valuable information.
+            </p>
+        </div>
+    {% comment %}
         <div class="log col-xs-12 col-md-offset-3 col-md-6 bb-green-background">
             <div class="log-info row">
                 <div class="log-header bb-blue-background">
@@ -25,166 +38,13 @@
                     </p>
                 </div>
             </div>
-            <div class="row">
-                <div class="text-center">
-                    <style>
-                        .slow .toggle-group {
-                            transition: left 0.7s;
-                            -webkit-transition: left 0.7s;
-                        }
-
-                        .fast .toggle-group {
-                            transition: left 0.1s;
-                            -webkit-transition: left 0.1s;
-                        }
-
-                        .quick .toggle-group {
-                            transition: none;
-                            -webkit-transition: none;
-                        }
-                    </style>
-                    <div class="list-group">
-                        <label class="checkbox-inline">
-                            <input id="weather-toggle" data-on="Weather" data-off="Weather" type="checkbox" checked
-                                   data-toggle="toggle" data-style="quick" data-onstyle="success">
-                        </label>
-                        <label class="checkbox-inline">
-                            <input id="work-toggle" data-on="Work" data-off="Work" type="checkbox" checked
-                                   data-toggle="toggle"
-                                   data-style="quick">
-                        </label>
-                        <label class="checkbox-inline">
-                            <input id="harvest-toggle" data-on="Harvests" data-off="Harvests" type="checkbox" checked
-                                   data-toggle="toggle" data-style="quick" data-onstyle="danger">
-                        </label>
-                        <label class="checkbox-inline">
-                            <input id="observation-toggle" data-on="Observations" data-off="Observations"
-                                   type="checkbox"
-                                   checked data-toggle="toggle" data-style="quick" data-onstyle="info">
-                        </label>
-                    </div>
-                </div>
-                <div class="log-body bb-green-background">
-                    {% for report in daily_reports %}
-                        <div class="log-day">
-                                <h2 class="text-center bb-blue-background log-section-header">
-                                    {{ report.date|date:"M d Y D" }}
-                                </h2>
-                            {% if report.weather_readings %}
-                                <div class="weather">
-                                    {% if report.weather_readings %}
-                                        {{ report.weather_readings|get_weather_html }}
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                            <div class="log-day-body">
-                                {% if report.work_completed %}
-                                    <div class="work">
-                                        <h4 class="full-bg-primary log-section-header">Work</h4>
-                                        {% for workSummary in report.work_completed %}
-                                            <b>{{ workSummary.project_name }}</b>
-                                            {% for work in workSummary.work_items %}
-                                                <div class="summary-line">
-                                                    <span>&nbsp&nbsp&nbsp&nbsp{{ work.datetime|get_time }} - {{ work.work|get_summary }}</span>
-                                                <span>
-
-                                            <button type="button" class="btn btn-success btn-xs pull-right"
-                                                    data-toggle="modal"
-                                                    data-target="#work_modal_{{ work.work_completed_id }}">Details
-                                            </button>
-                                            <div id="work_modal_{{ work.work_completed_id }}" class="modal fade"
-                                                 role="dialog">
-                                                <div style="color:black" class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            {{ work.summary }}
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            {{ work.work }}
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default"
-                                                                    data-dismiss="modal">Close
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                                </span>
-                                                </div>
-                                            {% endfor %}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            {% if report.harvests %}
-                                <div class="harvest">
-                                    <h4 class="full-bg-danger log-section-header">Harvests</h4>
-                                    {% for harvest in report.harvests %}
-                                        <div class="summary-line">&nbsp&nbsp&nbsp&nbsp{{ harvest }}</div>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            {% if report.observations %}
-                                <div class="observation">
-                                    <div>
-                                        <h4 class="full-bg-info log-section-header">Observations</h4>
-
-                                        <div class="summary-line">
-                                            {{ report.observations|length }} observations Taken
-                                        </div>
-                                        {% for ob in report.observations %}
-                                            <p>&nbsp&nbsp&nbsp&nbsp{{ ob.observation_date|get_time }} - {{ ob.observation|get_summary }}
-                                                <button type="button" class="btn btn-success btn-xs pull-right"
-                                                        data-toggle="modal"
-                                                        data-target="#observation_modal_{{ ob.observation_id }}">
-                                                    Details
-                                                </button>
-                                            <div id="observation_modal_{{ ob.observation_id }}" class="modal fade"
-                                                 role="dialog">
-                                                <div style="color:black" class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            {{ ob.summary }}
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            {{ ob.observation }}
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default"
-                                                                    data-dismiss="modal">Close
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            </p>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div id="bottom-buttons" class="">
-                <div class="">
-                    <div class="text-center">
-                        <a class="btn btn-primary btn-lg" href="{% url "home" %}">Today</a>
-                        <a class="btn btn-primary btn-lg" href="{% url "home" page=newer_page %}"
-                                {% if newer_page < 0 %}
-                           disabled
-                                {% endif %}
-                                >Newer</a>
-                        <a class="btn btn-primary btn-lg" href="{% url "home" page=older_page %}">Older</a>
-                    </div>
-                </div>
-            </div>
         </div>
+        {% endcomment %}
     </div>
 {% endblock %}
 
 {% block scripts %}
+    {% comment %}
     <script src="{% static "js/offcanvas.js" %}"></script>
     <script>
         $(document).ready(function () {
@@ -207,4 +67,5 @@
             $('[data-toggle="popover"]').popover();
         });
     </script>
+    {% endcomment %}
 {% endblock %}

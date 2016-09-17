@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from re import compile
-from farm_log.settings import DEFAULT_TIME_ZONE
+from grow_journal.settings import DEFAULT_TIME_ZONE
 
 EXEMPT_URLS = [compile(settings.LOGIN_URL.lstrip('/'))]
 if hasattr(settings, 'LOGIN_EXEMPT_URLS'):

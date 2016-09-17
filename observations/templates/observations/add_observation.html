@@ -1,0 +1,206 @@
+{% extends "observations/add_observation_model.html" %}
+{% load grow_journal_core_tags %}
+
+{% block head %}
+     <!--Import  Step Form Wizard css-->
+    <link href="/static/timon/css/tsf-step-form-wizard.min.css" rel="stylesheet" />
+    <link href="/static/timon/css/gsi-step-indicator.min.css" rel="stylesheet" />
+
+{% endblock %}
+{% block body %}
+    <div class="col-lg-12">
+        <h2>Observation</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div id="wizard-pane" class="tsf-wizard tsf-wizard-1">
+                <div class="tsf-controls ">
+                    <button id="left-wizard-button" type="button" data-type="prev" class="wizard-button pull-left right-wizard-button tsf-wizard-btn">
+                        <-
+                    </button>
+                    <button id="right-wizard-button" type="button" data-type="next" class="wizard-button pull-right left-wizard-button tsf-wizard-btn">
+                        ->
+                    </button>
+                </div>
+                <div class="tsf-nav-step" >
+                    <h3>Steps</h3>
+                    <ul class="gsi-step-indicator triangle gsi-style-1  gsi-transition ">
+                        <li class="current" data-target="step-1">
+                            <span></span>
+                        </li>
+                        <li data-target="step-2">
+                            <span></span>
+                        </li>
+                        <li data-target="step-3">
+                            <span></span>
+                        </li>
+                    </ul>
+                </div>
+            <div class="tsf-container">
+                <div class="tsf-content">
+                    <div class="tsf-step step-1">
+                    <fieldset>
+                            <legend>What Are You Observing?</legend>
+                            <div class="row">
+                                <div class="tsf-step-content">
+                                    <div class="form-group">
+                                        <label for="life-form-most-common">Most Commonly Used</label>
+                                        <select id="life-form-most-common" class="form-control"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="life-form-kingdom">Kingdom</label>
+                                        <select id="life-form-kingdom" class="form-control">
+                                            <option selected="true">No Kingdom</option>
+                                            {% for kingdom in kingdoms %}
+                                                <option value="{{ kingdom.kingdom_id }}">{{ kingdom.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="life-form-genus">Genus</label>
+                                        <select id="life-form-genus" class="form-control"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="life-form-species">Species</label>
+                                        <select id="life-form-species" class="form-control"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="life-form-variety">Variety</label>
+                                        <select id="life-form-variety" class="form-control"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="rootstock-checkbox">Is Grafted</label>
+                                        <input id="rootstock-checkbox" type="checkbox" name="grafted" value="Is Grafted" class="form-control">
+                                    </div>
+                                    <div id="rootstock-group" class="form-group" hidden>
+                                        <label for="life-form-rootstock">Rootstock</label>
+                                        <select id="life-form-rootstock" class="form-control"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="tsf-step step-2">
+                        <fieldset>
+                            <legend>Information</legend>
+                            <div class="row">
+                                <div class="tsf-step-content">
+                                    <div class="form-group">
+                                        <label for="test">What Occurred?</label>
+                                        <input id="test" name="type" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="row">
+                                <div class="tsf-step-content">
+                                    <label>When Did it Occur?</label>
+                                    <div id="id-datetime" class="input-group date form-group">
+                                        <input class="form-control" id="id-datetime" name="datetime" placeholder="Datetime" required="required" title="" type="text" value="{% now "Y-m-d H:i" %}">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="tsf-step-content">
+                                    <div class="form-group">
+                                        <label for="affinity-radio">Is This Good Or Bad?</label>
+                                        <div class="radio">
+                                          <label><input type="radio" name="affinity">Positive</label>
+                                        </div>
+                                        <div class="radio">
+                                          <label><input type="radio" name="affinity" checked="true">Neutral</label>
+                                        </div>
+                                        <div class="radio disabled">
+                                          <label><input type="radio" name="affinity" >Negative</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="tsf-step step-3">
+                        <fieldset>
+                            <legend>Summary and Details</legend>
+                            <div class="row">
+                                <div class="tsf-step-content">
+                                    <div class="form-group">
+                                        <label for="summary">(Optional) Summarize What Was Observed</label>
+                                        <input id="summary" class="form-control" type="text">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="details">(Optional) Details</label>
+                                        <textarea id="details" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="tsf-controls">
+                    <button id="submit-wizard-button" type="submit" data-type="finish" class="btn pull-right tsf-wizard-btn">
+                        SUBMIT
+                    </button>
+                </div>
+            </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="/static/timon/js/tsf-wizard-plugin.js"></script>
+    <script src="/static/js/hammer-time.min.js"></script>
+    <script src="/static/js/hammer.min.js"></script>
+    <script type="application/javascript">
+    $(document).ready(function(){
+         $("#id-datetime").datetimepicker().find('input').addClass("form-control");
+        $('.tsf-wizard-1').tsfWizard({
+            nextBtn: '->',
+            prevBtn: '<-',
+            finishBtn: '<span class="glyphicon glyphicon-star"></span>SUBMIT',
+            stepEffect: 'slideRightLeft',
+            stepStyle: 'style12',
+            navPosition: 'top',
+            stepTransition: true,
+            showButtons: true,
+            showStepNum: true,
+            height: '340px'
+        });
+        $('#datetimepicker').datetimepicker();
+        var rootstockGroup = $('#rootstock-group');
+        $('#rootstock-checkbox').change(function() {
+            if (this.checked){
+                rootstockGroup.show();
+            }
+            else {
+                rootstockGroup.hide();
+            }
+        });
+        $('input[type=checkbox][name=rootstock]').attr('checked', true);
+
+        var myElement = document.getElementById('wizard-pane');
+        console.log(myElement);
+        var mc = new Hammer.Manager(myElement, {
+	        recognizers: [
+		    [Hammer.Swipe,{ direction: Hammer.DIRECTION_HORIZONTAL }]
+        ]});
+
+        var HAMMER_LEFT = 2;
+        var HAMMER_RIGHT = 4;
+        var leftButton = $("#left-wizard-button");
+        var rightButton = $("#right-wizard-button");
+        mc.on("swipe", function(ev) {
+            var direction = ev.direction;
+            if (direction == HAMMER_LEFT){
+                if ($('#right-wizard-button:visible').length > 0){
+                    rightButton.click();
+                }
+            }
+            else if (direction == HAMMER_RIGHT){
+                if ($('#left-wizard-button:visible').length > 0){
+                    leftButton.click();
+                }
+            }
+        });
+    });
+    </script>
+{% endblock %}

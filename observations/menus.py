@@ -1,4 +1,4 @@
-from farm_log.menus import MenuItem, AddModelMenuItem, main_menu
+from grow_journal.menus import MenuItem, AddModelMenuItem, main_menu
 from observations.views import add_observation, add_temperature_reading, add_weather_reading
 
 _CHILD_MENU_ITEMS = (

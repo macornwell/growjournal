@@ -1,8 +1,6 @@
 from django.contrib import admin
-from observations.models import TemperatureReading, WeatherReading, Observation
+from observations.models import Observation, ObservationType, Prediction
 
-# Register your models here.
-
-admin.site.register(TemperatureReading)
-admin.site.register(WeatherReading)
 admin.site.register(Observation)
+admin.site.register(ObservationType)
+admin.site.register(Prediction)

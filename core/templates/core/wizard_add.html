@@ -9,9 +9,9 @@
     Last {{ add_model_type}}: {{ last_object }}
     <form action="" method="post" class="form">
         {% csrf_token %}
-        <ul data-bind="template: { name: selectPaneTemplate,
-                                   foreach: panes">
-        </ul>
+        <input type="text" data-bind="value: name">
+        <div data-bind="template: { name: selectPaneTemplate,
+                                   foreach: panes, as : 'pane'}"></div>
 
         {% buttons %}
             <button type="submit" class="btn btn-primary wizard-submit">
@@ -23,12 +23,15 @@
     {% endblock %}
 {% endblock %}
 {% block scripts %}
-    <script type="application/javascript" src="wizard_add.html"></script>
+    <script type="application/javascript" src="/static/js/add_wizard.js"></script>
     <script type="text/html" id="text">
         <input data-binding="value: value, attr: {name: name}">
     </script>
     <script type="text/html" id="textarea">
-        <textarea data-binding="value: value, attr: {name: name}"></textarea>
+        <div>
+            <label data-binding="attr: {value: pane.name, for: pane.name}" ></label>
+            <textarea class="form-control" data-binding="value: pane.value"></textarea>
+        </div>
     </script>
     <script type="text/html" id="dropdown">
         <select data-binding="attr: {name: name}"></select>
@@ -36,9 +39,10 @@
     <script type="application/javascript">
         $(document).ready(function(){
             var data = {};
-            var wizard = new farm_log.AddWizard();
+            var wizard = new grow_journal.AddWizard();
+            console.log(wizard)
             {% for formLine in formData %}
-                wizard.addPane("{{ form.name }}", "{{ form.type }}");
+                wizard.addPane("{{ formLine.name }}", "{{ formLine.type }}", {{ formLine.required }});
             {% endfor %}
             ko.applyBindings(wizard);
         });

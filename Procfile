@@ -1,1 +1,1 @@
-web: gunicorn farm_log.wsgi --log-file -
+web: gunicorn grow_journal.wsgi --log-file -

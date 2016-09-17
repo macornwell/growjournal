@@ -1,78 +1,73 @@
 from django.utils import timezone
 from django.db import models
-from core.models import BaseUserActivityModel, Project, get_objects_with_datetime_property_on_given_date, AFFINITY_STATES
-from core.utils import get_summary_with_datetime, get_local_time_formatted
+from core.managers import NameAscendingOrderManager
+from core.models import BaseUserActivityOnSiteModel, BaseModel
+from taxonomy.models import LifeForm, GraftedLifeForm, Kingdom
 
-
-
-TEMPERATURE_UNITS = (
-    ('f', 'Fahrenheit'),
-    ('c', 'Celsius')
+AFFINITY_STATES = (
+    ('pos', 'Positive'),
+    ('neu', 'Neutral'),
+    ('neg', 'Negative'),
 )
 
-WEATHER_STATES = (
-    ('s', 'Sunny'),
-    ('p', 'Partly Cloudy'),
-    ('c', 'Cloudy'),
-    ('o', 'Overcast'),
-    ('r', 'Rainy'),
-    ('f', 'Freeze'),
-    ('t', 'Frost'),
-    ('n', 'Snow'),
+DEFAULT_TYPES = (
+    'Born',
+    'Death',
+    'Disease Present',
+    'Healthy',
+    'Health Diminishing',
+    'Health Improving',
+    'Taste Test',
+    'Other',
 )
 
-WEATHER_STATES_DICT = {key: value for (key, value) in WEATHER_STATES}
+DEFAULT_PLANT_OBSERVATION_TYPES = (
+    'Bloom Start',
+    'Bloom End',
+    'Fruit Forming',
+    'Fruit Under-Ripe',
+    'Fruit Ripe',
+    'Fruit Over-Ripe',
+    'Fruiting Period Over',
+    'Going Dormant',
+    'Leafing Out',
+    'Germinated',
+    'Growth, New',
+    'Pest Pressure',
+    'Pollination, Sufficient',
+    'Pollination, InSufficient',
+)
 
 
-class Observation(BaseUserActivityModel):
+class ObservationType(BaseModel):
+    observation_type_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+    kingdom_specific = models.ForeignKey(Kingdom, blank=True, null=True)
+    objects = NameAscendingOrderManager()
+
+    def __str__(self):
+        if self.kingdom_specific:
+            return '{0} [{1}]'.format(self.name, self.kingdom_specific.name)
+        return self.name
+
+
+class Observation(BaseUserActivityOnSiteModel):
     observation_id = models.AutoField(primary_key=True)
-    project = models.ForeignKey(Project, blank=True, null=True)
-    observation_date = models.DateTimeField(default=timezone.now)
+    observation_type = models.ForeignKey(ObservationType)
+    datetime = models.DateTimeField(default=timezone.now)
+    life_form = models.ForeignKey(LifeForm, blank=True, null=True)
+    grafted_life_form = models.ForeignKey(GraftedLifeForm, blank=True, null=True)
     affinity = models.CharField(max_length=3, default='neu', choices=AFFINITY_STATES)
-    summary = models.CharField(max_length=50, blank=True, null=True)
+    summary = models.CharField(max_length=100, blank=True, null=True)
     observation = models.TextField()
 
-    @staticmethod
-    def get_observations_by_date(date):
-        return Observation.objects.filter(observation_date__year=date.year,
-                                          observation_date__month=date.month,
-                                          observation_date__day=date.day,
-                                          )
 
-    def __str__(self):
-        return get_summary_with_datetime(self.observation_date, self.observation, self.summary)
-
-
-class TemperatureReading(BaseUserActivityModel):
-    temperature_reading_id = models.AutoField(primary_key=True)
-    value = models.DecimalField(decimal_places=2, max_digits=8)
-    datetime = models.DateTimeField(default=timezone.now)
-    unit = models.CharField(max_length=1, choices=TEMPERATURE_UNITS, default=TEMPERATURE_UNITS[0][0])
-
-    def __str__(self):
-        return '{0} - {1}{2}\u00B0'.format(get_local_time_formatted(self.datetime), self.value, self.unit)
-
-    @staticmethod
-    def get_readings_by_date(date):
-        return get_objects_with_datetime_property_on_given_date(TemperatureReading, date)
-
-
-class WeatherReading(BaseUserActivityModel):
-    weather_reading_id = models.AutoField(primary_key=True)
-    datetime = models.DateTimeField(default=timezone.now)
-    state = models.CharField(max_length=1, choices=WEATHER_STATES)
-    temperature = models.DecimalField(decimal_places=2, max_digits=8)
-    unit = models.CharField(max_length=1, choices=TEMPERATURE_UNITS, default=TEMPERATURE_UNITS[0][0])
-
-    def __str__(self):
-        return '{0} - {1} {2}'.format(get_local_time_formatted(self.datetime), self.temperature, WEATHER_STATES_DICT[self.state])
-
-    @staticmethod
-    def get_readings_by_date(date):
-        return get_objects_with_datetime_property_on_given_date(WeatherReading, date)
-
-
-
-
-
-
+class Prediction(BaseUserActivityOnSiteModel):
+    prediction_id = models.AutoField(primary_key=True)
+    observation = models.ForeignKey(Observation, blank=True, null=True)
+    datetime = models.DateTimeField()
+    life_form = models.ForeignKey(LifeForm, blank=True, null=True)
+    grafted_life_form = models.ForeignKey(GraftedLifeForm, blank=True, null=True)
+    affinity = models.CharField(max_length=3, default='neu', choices=AFFINITY_STATES)
+    summary = models.CharField(max_length=100, blank=True, null=True)
+    details = models.TextField()

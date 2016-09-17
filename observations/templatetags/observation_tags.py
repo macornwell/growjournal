@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 import pytz
 import datetime
-from farm_log.settings import DEFAULT_TIME_ZONE
+from grow_journal.settings import DEFAULT_TIME_ZONE
 
 register = template.Library()
 

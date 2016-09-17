@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib import messages
-from core.models import Feedback
+from core.models import WebsiteFeedback
 from core.forms import FeedbackForm
 
 
@@ -42,6 +42,6 @@ def get_add_model_form(request, templatePath, modelType, modelTypeFriendlyName, 
 def add_feedback(request):
     user = request.user
     #Replace with QueryLayer.get_feedback_by_user_id
-    feedbackForByUser = Feedback.objects.filter(user_id=user.id)
+    feedbackForByUser = WebsiteFeedback.objects.filter(user_id=user.id)
     generator = lambda: (('feedback', feedbackForByUser),)
-    return get_add_model_form(request, 'core/add_feedback.html', Feedback, 'Feedback', 'datetime', FeedbackForm, additionalDataGenerator=generator)
+    return get_add_model_form(request, 'core/add_feedback.html', WebsiteFeedback, 'WebsiteFeedback', 'datetime', FeedbackForm, additionalDataGenerator=generator)

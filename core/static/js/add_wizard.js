@@ -8,20 +8,26 @@ Knockout.validation
  */
 
 (function() {
-  var AddWizard, WizardPane, _easyData, ref, root;
+  var AddWizard, WizardPane, ref, root,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-  root.farm_log = (ref = root.farm_log) != null ? ref : {};
-
-  _easyData = new farm_log_data.EasyRestData();
+  root.grow_journal = (ref = root.grow_journal) != null ? ref : {};
 
   WizardPane = (function() {
-    function WizardPane(name1, type1, isRequired1) {
-      this.name = name1;
+    function WizardPane(name, type1, isRequired) {
       this.type = type1;
-      this.isRequired = isRequired1;
       this.value = ko.observable();
+      this.name = ko.observable(name);
+      console.log('wizardpane constructor');
+      console.log(this.name());
+      console.log(this);
+      this.value.subscribe((function(_this) {
+        return function(newValue) {
+          return console.log('NewValue: ' + newValue);
+        };
+      })(this));
     }
 
     return WizardPane;
@@ -31,26 +37,28 @@ Knockout.validation
   AddWizard = (function() {
     function AddWizard(objectName) {
       this.objectName = objectName;
+      this.selectPaneTemplate = bind(this.selectPaneTemplate, this);
+      this.addPane = bind(this.addPane, this);
       this.panes = ko.observableArray();
-      ({
-        addPane: (function(_this) {
-          return function(name, type, isRequired) {
-            return _this.panes.push(new WizardPane(name, type, isRequired));
-          };
-        })(this),
-        selectPaneTemplate: (function(_this) {
-          return function(type) {
-            return type;
-          };
-        })(this)
-      });
+      this.name = ko.observable();
     }
+
+    AddWizard.prototype.addPane = function(name, type, isRequired) {
+      this.panes.push(new WizardPane(name, type, isRequired));
+      this.panes()[0].value('new');
+      return console.log(this.panes().length);
+    };
+
+    AddWizard.prototype.selectPaneTemplate = function(pane) {
+      console.log(pane.type);
+      return pane.type;
+    };
 
     return AddWizard;
 
   })();
 
-  root.farm_log.AddWizard = AddWizard;
+  root.grow_journal.AddWizard = AddWizard;
 
 }).call(this);
 
