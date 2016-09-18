@@ -1,7 +1,32 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from core.models import WebsiteFeedback
-from core.forms import FeedbackForm
+from core.models import WebsiteFeedback, Site
+from core.forms import FeedbackForm, SiteForm
+
+WIZARD_FORM_TEMPLATE = 'wizard-form.html'
+
+
+def add_site(request):
+    data = {}
+    if request.POST:
+        return post_site(request)
+    form = SiteForm()
+    data['form'] = form
+    return render(request, WIZARD_FORM_TEMPLATE, data)
+
+
+def post_site(request):
+    data = request.POST
+    name = data['name']
+    isJoinable = 'public-joinable' in data
+    isViewable = 'public-viewable' in data
+    site = Site()
+    site.user = request.user
+    site.is_public_joinable = isJoinable
+    site.is_public_viewable = isViewable
+    site.name = name
+    site.save()
+    return redirect('setup')
 
 
 def get_add_model_form(request, templatePath, modelType, modelTypeFriendlyName, datePropertyName, formType, customValidator=None, additionalDataGenerator=None):

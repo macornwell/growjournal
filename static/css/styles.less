@@ -1,5 +1,6 @@
 @bb-blue: #162c65;
 @bb-green: #006a38;
+@main-color: #E2E2E2;
 
 .bb-blue-background {
   background: @bb-blue
@@ -138,8 +139,30 @@ footer {
 
 
 /* Navigation */
-.navbar-inverse{
+@media(max-width: 767px){
+
+.navbar-nav
+{
   background: #333333;
+}
+}
+
+
+.navbar-nav > li > a {
+  color: white;
+}
+@media (min-width: 768px) {
+  .navbar-nav > li > a {
+    color: #4C4C4C;
+  }
+}
+
+.navbar-toggle .icon-bar{
+  background-color: black;
+}
+
+.navbar-toggle {
+  border: 2px outset buttonface;
 }
 
 @media (max-width: 767px) {
@@ -149,13 +172,13 @@ footer {
 }
 
 @media (max-width: 767px) {
-  .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+   .navbar-nav > li > a:hover,  .navbar-nav > li > a:focus {
     background: grey;
   }
 }
 
  @media (max-width: 767px) {
-   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
+    .navbar-nav .open .dropdown-menu > li > a:hover,  .navbar-nav .open .dropdown-menu > li > a:focus {
      background: grey;
    }
  }
@@ -163,8 +186,18 @@ footer {
 @media (max-width: 767px) {
   .navbar-nav .open .dropdown-menu .nav-submenu {
     background: grey;
-
   }
+}
+ .navbar-nav>.open>a,  .navbar-nav>.open>a:hover,  .navbar-nav>.open>a:focus{
+  background-color: #43A261;
+}
+
+ .navbar-nav>li>a:hover,  .navbar-nav>li>a:focus{
+  color: black;
+}
+
+ .navbar-brand{
+  color: black;
 }
 
 .wizard-button {
@@ -225,4 +258,81 @@ footer {
 .gsi-style-9 li>*:after {
   background-color: grey;
   position: relative;
+}
+
+
+.cta-button{
+  
+}
+
+.main-background-color{
+  background-color: @main-color;
+}
+
+body{
+  background-color: @bb-green;
+}
+
+.main-body{
+  min-height: 500px;
+  @media (min-width: 767px) {
+    min-height: 1080px;
+  }
+}
+
+footer{
+  padding: 20px;
+  background-color: @main-color;
+}
+
+.border-radius(@radius: 5px) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}
+
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-nav {
+    padding-left: 20px;
+  }
+}
+
+a.navbar-brand{
+  padding-top:5px;
+}
+
+.site-select{
+  visibility: visible;
+  position: absolute;
+  top: 50%;
+
+  @media (max-width: 767px) {
+    left: 0px;
+  }
+}
+
+
+.window {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: @main-color;
+
+}
+
+@media (max-width: 767px) {
+  .container{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+.setup-list{
+  list-style: none;
 }

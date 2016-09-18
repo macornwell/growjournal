@@ -1,0 +1,15 @@
+<label>{{ control.label }}</label>
+<input type="checkbox"
+       {% if control.id %}
+        id="{{ control.id }}"
+       {% endif %}
+       name="{{ control.name }}"
+       value="{{ control.value }}"
+       class="form-control
+       {% for className in control.classes %}
+       {% endfor %}
+       "
+       {% if control.is_checked %}
+           checked
+       {% endif %}
+        >

@@ -7,53 +7,61 @@
 {% block title %}Grow Journal - Record Your Observations and Interactions{% endblock %}
 
 {% block  body %}
-
-    <div class="container">
-
-    <div class="">
-        <div class="log col-xs-12 col-md-offset-3 col-md-6">
-            <h1>Grow Journal</h1>
-            <p>
-                My children, family, friends, and community need the best information about growing healthy food.
-            </p>
-            <p>
-                By recording our growing experiences we are able to communicate what we are doing so we are offered the opportunity to piece together our past, present and future.
-            </p>
-            <p>
-                But this valuable information is locked away on pages of books, files on computers, and random websites. None of which linked together or organized.
-            </p>
-            <p>
-                We know fixing this problem for like minded people with the help of computers will create a powerful technology never before seen.
-            </p>
-            <p>
-                Grow Journal is a platform that enables growers everywhere the ability to digitally log, store, analyze, and share their most valuable information and results.
-            </p>
-            <div class="col-xs-12">
-                <img style="width:100%" src="https://upload.wikimedia.org/wikipedia/commons/4/41/NSFNET-traffic-visualization-1991.jpg">
-                <span>This is so totally what it'll look like..... (In abstraction of course)</span>
-            </div>
-        </div>
-    </div>
-    {% comment %}
-        <div class="log col-xs-12 col-md-offset-3 col-md-6 bb-green-background">
-            <div class="log-info row">
-                <div class="log-header bb-blue-background">
-                    <h1 class="text-center">Work and Observation Logs</h1>
-
-                    <p>This website is the front face to Bonnie Blue Farms and Nursery's logs which are
-                        collected using a framework we've built to track and manage the farm entirely
-                        from our smart phones.
-                    </p>
-
-                    <p>
-                        This is the front seat of the raw information that Bonnie Blue collects
-                        in order to make a smarter farm and understand the world its growing in.
-                    </p>
+<div class="container">
+    <div class="main-portal col-xs-12 window">
+        <h2>Select</h2>
+        {% if request.user.is_authenticated %}
+            <div class="main-controls row-fluid">
+                <div class="col-xs-6 main-left">
+                    <a class="btn btn-default btn-block btn-lg" href="{% url 'add_observation' %}">Harvest</a>
+                    <a class="btn btn-default btn-block btn-lg">Plant</a>
+                    <a class="btn btn-default btn-block btn-lg" href="{% url 'setup' %}">Setup</a>
+                </div>
+                <div class="col-xs-6 main-right">
+                    <a class="btn btn-default btn-block btn-lg">Observe</a>
+                    <a class="btn btn-default btn-block btn-lg">Task Done</a>
+                    <a class="btn btn-default btn-block btn-lg">Prediction</a>
                 </div>
             </div>
+        {% else %}
+            <div class="anon-user">
+                <h1>Grow Journal</h1>
+                <br>
+                <p>
+                    My children, family, friends, and community need the best information about growing healthy food.
+                </p>
+                <p>
+                    By recording our growing experiences we are able to communicate what we are doing so we are offered the opportunity to piece together our past, present and future.
+                </p>
+                <p>
+                    But this valuable information is locked away on pages of books, files on computers, and random websites. None of which linked together or organized.
+                </p>
+                <p>
+                    We know fixing this problem for like minded people with the help of computers will create a powerful technology never before seen.
+                </p>
+                <p>
+                    Grow Journal is a platform that enables growers everywhere the ability to digitally log, store, analyze, and share their most valuable information and results.
+                </p>
+                <div class="col-xs-12">
+                    <img style="width:100%" src="https://upload.wikimedia.org/wikipedia/commons/4/41/NSFNET-traffic-visualization-1991.jpg">
+                    <span>This is so totally what it'll look like..... (In abstraction of course)</span>
+                </div>
+                <div class="col-xs-offset-1 col-xs-4">
+
+                    <a class="btn btn-default btn-lg" href="">Join Now</a>
+                </div>
+                <div class="col-xs-offset-1 col-xs-4">
+                    <a class="btn btn-default btn-lg" href="{{ loginUrl }}">Login</a>
+                </div>
+            </div>
+        {% endif %}
         </div>
-        {% endcomment %}
+</div>
+<div class="container">
+    <div class="col-xs-12 bottom-portal window">
+        <h2>Latest Entries</h2>
     </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

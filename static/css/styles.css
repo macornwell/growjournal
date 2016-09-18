@@ -114,8 +114,24 @@ footer {
   }
 }
 /* Navigation */
-.navbar-inverse {
-  background: #333333;
+@media (max-width: 767px) {
+  .navbar-nav {
+    background: #333333;
+  }
+}
+.navbar-nav > li > a {
+  color: white;
+}
+@media (min-width: 768px) {
+  .navbar-nav > li > a {
+    color: #4C4C4C;
+  }
+}
+.navbar-toggle .icon-bar {
+  background-color: black;
+}
+.navbar-toggle {
+  border: 2px outset buttonface;
 }
 @media (max-width: 767px) {
   .navbar-nav .open .nav-submenu {
@@ -123,14 +139,14 @@ footer {
   }
 }
 @media (max-width: 767px) {
-  .navbar-inverse .navbar-nav > li > a:hover,
-  .navbar-inverse .navbar-nav > li > a:focus {
+  .navbar-nav > li > a:hover,
+  .navbar-nav > li > a:focus {
     background: grey;
   }
 }
 @media (max-width: 767px) {
-  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,
-  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
+  .navbar-nav .open .dropdown-menu > li > a:hover,
+  .navbar-nav .open .dropdown-menu > li > a:focus {
     background: grey;
   }
 }
@@ -138,6 +154,18 @@ footer {
   .navbar-nav .open .dropdown-menu .nav-submenu {
     background: grey;
   }
+}
+.navbar-nav > .open > a,
+.navbar-nav > .open > a:hover,
+.navbar-nav > .open > a:focus {
+  background-color: #43A261;
+}
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus {
+  color: black;
+}
+.navbar-brand {
+  color: black;
 }
 .wizard-button {
   height: 70px;
@@ -189,4 +217,59 @@ footer {
 .gsi-style-9 li > *:after {
   background-color: grey;
   position: relative;
+}
+.main-background-color {
+  background-color: #E2E2E2;
+}
+body {
+  background-color: #006a38;
+}
+.main-body {
+  min-height: 500px;
+}
+@media (min-width: 767px) {
+  .main-body {
+    min-height: 1080px;
+  }
+}
+footer {
+  padding: 20px;
+  background-color: #E2E2E2;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 768px) {
+  .navbar-nav {
+    padding-left: 20px;
+  }
+}
+a.navbar-brand {
+  padding-top: 5px;
+}
+.site-select {
+  visibility: visible;
+  position: absolute;
+  top: 50%;
+}
+@media (max-width: 767px) {
+  .site-select {
+    left: 0px;
+  }
+}
+.window {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #E2E2E2;
+}
+@media (max-width: 767px) {
+  .container {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+.setup-list {
+  list-style: none;
 }

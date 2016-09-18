@@ -1,17 +1,25 @@
 import datetime
 from datetime import timedelta
 from django.shortcuts import render
+from django.core.urlresolvers import reverse
 import django.utils.timezone as timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils.html import escape
 
 
 LOG_DAYS_PER_PAGE = 5
 
 def home(request):
     data = {}
+    loginUrl = reverse('admin:login')
+    loginNextUrl = escape(request.path)
+    data['loginUrl'] = '{0}?next={1}'.format(loginUrl, loginNextUrl)
     return render(template_name='home.html', context=data, request=request)
 
+def setup(request):
+    data = {}
+    return render(template_name='setup.html', context=data, request=request)
 
 """
 def home(request):

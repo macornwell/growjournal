@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+
 def get_objects_with_datetime_property_on_given_date(modelClass, date):
     return modelClass.objects.filter(datetime__year=date.year,
                                      datetime__month=date.month,
@@ -25,6 +26,7 @@ class BaseUserActivityModel(BaseModel):
 
 class Site(BaseUserActivityModel):
     site_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
     site_users = models.ManyToManyField(User, related_name='user_group')
     is_public_viewable = models.BooleanField(default=True)
     is_public_joinable = models.BooleanField(default=False)

@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% with stepCount=form.steps|length %}
+
+{% block body %}
+{% load bootstrap3 %}
+{% bootstrap_messages %}
+
+{% block formbody %}
+<div class="container">
+    <div class="col-xs-12 window main-background-color">
+        <h2>{{ form.model_type }}</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div id="wizard-pane" class="tsf-wizard tsf-wizard-1">
+            {% if stepCount > 1 %}
+                <div class="tsf-controls ">
+                    <button id="left-wizard-button" type="button" data-type="prev" class="wizard-button pull-left right-wizard-button tsf-wizard-btn">
+                        <-
+                    </button>
+                    <button id="right-wizard-button" type="button" data-type="next" class="wizard-button pull-right left-wizard-button tsf-wizard-btn">
+                        ->
+                    </button>
+                </div>
+                <div class="tsf-nav-step" >
+                    <h3>Steps</h3>
+                    <ul class="gsi-step-indicator triangle gsi-style-1  gsi-transition ">
+                        {% for step in form.steps %}
+                            <li data-target="step-{{ forloop.counter }}"
+                                class="
+                                {% if forloop.counter == 1 %}
+                                current
+                                {% endif %}
+                                ">
+                                <span></span>
+                            </li>
+
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <div class="tsf-container">
+                <div class="tsf-content">
+                    {% for step in form.steps %}
+                        <div class="tsf-step step-{{ forloop.counter }}">
+                            <fieldset>
+                                <legend>{{ step.legend }}</legend>
+                                <div class="row">
+                                    <div class="tsf-step-content">
+                                        {% for control in step.form_controls %}
+                                            <div class="form-group">
+                                                {% if control.template_path %}
+                                                    {% include control.template_path with control=control %}
+                                                {% else %}
+                                                    {{ control.generate_template }}
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="tsf-controls">
+                    <button id="submit-wizard-button" type="submit" data-type="finish" class="btn pull-right tsf-wizard-btn">
+                        SUBMIT
+                    </button>
+                </div>
+            </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% endblock %}
+
+
+
+{% block scripts %}
+    <script src="/static/timon/js/tsf-wizard-plugin.js"></script>
+    <script src="/static/js/hammer-time.min.js"></script>
+    <script src="/static/js/hammer.min.js"></script>
+    <script type="application/javascript">
+
+    var setupWizardSwipe = function(){
+        console.log('setting up');
+        var wizardPane = document.getElementById('wizard-pane');
+        var mc = new Hammer.Manager(wizardPane, {
+	        recognizers: [
+		    [Hammer.Swipe,{ direction: Hammer.DIRECTION_HORIZONTAL }]
+        ]});
+
+        var HAMMER_LEFT = 2;
+        var HAMMER_RIGHT = 4;
+        var leftButton = $("#left-wizard-button");
+        var rightButton = $("#right-wizard-button");
+        mc.on("swipe", function(ev) {
+            var direction = ev.direction;
+            if (direction == HAMMER_LEFT){
+                if ($('#right-wizard-button:visible').length > 0){
+                    rightButton.click();
+                }
+            }
+            else if (direction == HAMMER_RIGHT){
+                if ($('#left-wizard-button:visible').length > 0){
+                    leftButton.click();
+                }
+            }
+        });
+    };
+
+    $(document).ready(function(){
+        {% for step in form.steps %}
+            {% if step.scripts %}
+                {% for script in step.scripts %}
+                    {{ script }}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+
+    /*
+        $("#id-datetime").datetimepicker().find('input').addClass("form-control");
+        $('#datetimepicker').datetimepicker();
+     var rootstockGroup = $('#rootstock-group');
+        $('#rootstock-checkbox').change(function() {
+            if (this.checked){
+                rootstockGroup.show();
+            }
+            else {
+                rootstockGroup.hide();
+            }
+        });
+        $('input[type=checkbox][name=rootstock]').attr('checked', true);
+   */
+        $('.tsf-wizard-1').tsfWizard({
+            nextBtn: '->',
+            prevBtn: '<-',
+            finishBtn: '<span class="glyphicon glyphicon-star"></span>SUBMIT',
+            stepEffect: 'slideRightLeft',
+            stepStyle: 'style12',
+            navPosition: 'top',
+            stepTransition: true,
+            {% if stepCount > 1 %}
+            showButtons: true,
+            showStepNum: true,
+            {% endif %}
+            height: '340px'
+        });
+            {% if stepCount > 1 %}
+                setupWizardSwipe();
+            {% endif %}
+    });
+    </script>
+{% endblock %}
+{% endwith %}
