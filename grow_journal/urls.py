@@ -6,8 +6,8 @@ from grow_journal import settings
 from rest_framework import routers
 import core.urls as CoreUrls
 import observations.urls as ObservationUrls
-from grow_journal.views import home, setup
-
+import taxonomy.urls as TaxonomyUrls
+from grow_journal.views import home, setup, settings_view
 
 router = routers.DefaultRouter()
 
@@ -20,12 +20,14 @@ url(r'^(?P<page>-?\d+)/$', home_with_page, name='home'),
 urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^setup$', setup, name='setup'),
+    url(r'^setup/settings$', settings_view, name='settings'),
     url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^login/$', login, {'template_name': 'admin/login.html'})
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += CoreUrls.urlpatterns
 urlpatterns += ObservationUrls.urlpatterns
+urlpatterns += TaxonomyUrls.urlpatterns
 
 ###################
 # Rest Framework

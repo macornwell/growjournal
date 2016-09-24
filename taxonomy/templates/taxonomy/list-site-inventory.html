@@ -1,0 +1,21 @@
+{% extends "window.html" %}
+{% load grow_journal_core_tags %}
+{% load taxonomy_tags %}
+
+{% block window %}
+{% for kingdom in list_entries|get_ordered_by_str %}
+    <h2 class="text-center">{% taxonomy_name kingdom use_latin %}</h2>
+    {% for genus in list_entries|get_dict_item:kingdom|get_ordered_by_str%}
+        <h3>{% taxonomy_name genus use_latin %}</h3>
+        <ul class="modellist-style">
+            {% for model in list_entries|get_dict_item:kingdom|get_dict_item:genus|get_ordered_by_str %}
+            <li>
+                {% taxonomy_name model use_latin %}
+            </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endfor %}
+
+<a class="btn btn-default btn-block btn-lg" href="{% url 'add_site_inventory' %}">Add Inventory</a>
+{% endblock %}

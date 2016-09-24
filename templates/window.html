@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container">
+        <div class="col-xs-12 window">
+            <h1>{% block windowtitle %}{% endblock %}</h1>
+            {% block window %}
+            {% endblock %}
+            <button class="pull-left btn btn-default btn-lg back-button" onclick="{% block windowback %}{% if back_button_url %}{{ back_button_url }}{% else %}window.history.back(){% endif %}{% endblock %}">Back</button>
+        </div>
+    </div>
+{% endblock %}

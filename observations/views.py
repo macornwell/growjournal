@@ -17,7 +17,7 @@ def add_observation(request):
     plantTypes = [t for t in observationTypes if t.kingdom_specific and t.kingdom_specific.name is PLANT_KINGDOM_NAME]
     otherTypes = [t for t in observationTypes if not t.kingdom_specific]
     data = {
-        'kingdoms': _get_kingdoms_in_order(),
+        'kingdomDict': _get_kingdoms_in_order(),
         'plant_types': plantTypes,
         'animal_types': animalTypes,
         'other_types': otherTypes,

@@ -1,2 +1,2 @@
 <label>{{ control.label }}</label>
-<input class="form-control" type="text" name="{{ control.name }}">
+<input class="form-control" type="text" name="{{ control.name }}" {% if control.value %}value="{{ control.value }}"{% endif %}>

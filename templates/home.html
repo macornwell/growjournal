@@ -9,18 +9,25 @@
 {% block  body %}
 <div class="container">
     <div class="main-portal col-xs-12 window">
-        <h2>Select</h2>
+        <h2>Welcome {{ request.user }}</h2>
         {% if request.user.is_authenticated %}
             <div class="main-controls row-fluid">
                 <div class="col-xs-6 main-left">
+                    {% if user_sites %}
                     <a class="btn btn-default btn-block btn-lg" href="{% url 'add_observation' %}">Harvest</a>
                     <a class="btn btn-default btn-block btn-lg">Plant</a>
+                    {% endif %}
                     <a class="btn btn-default btn-block btn-lg" href="{% url 'setup' %}">Setup</a>
+                    {% if not user_sites %}
+                        <p>You need to add a site. Click Setup.</p>
+                    {% endif %}
                 </div>
                 <div class="col-xs-6 main-right">
+                    {% if user_sites %}
                     <a class="btn btn-default btn-block btn-lg">Observe</a>
                     <a class="btn btn-default btn-block btn-lg">Task Done</a>
                     <a class="btn btn-default btn-block btn-lg">Prediction</a>
+                    {% endif %}
                 </div>
             </div>
         {% else %}

@@ -7,6 +7,21 @@ from core.utils import get_summary as coreGetSummary
 register = template.Library()
 
 @register.filter
+def get_ordered_by_str(enumerable):
+    return sorted(enumerable)
+
+@register.filter
+def get_dict_item(dictionary, key):
+    return dictionary.get(key)
+
+@register.filter
+def clean_site_name(name):
+    if name:
+        if len(name) > 15:
+            name = name[0:15] + '...'
+    return name
+
+@register.filter
 def format_bootstrap_datetime(dateTime):
     return dateTime.strftime('%Y-%M-d% %H:%m')
 
@@ -33,7 +48,6 @@ def grow_journal_login(request):
 
     return mark_safe(snippet)
 
-
 @register.simple_tag
 def grow_journal_logout(request, user):
     try:
@@ -57,3 +71,6 @@ def grow_journal_logout(request, user):
     snippet = format_html(snippet, user=escape(user), href=logout_url, next=escape(request.path))
 
     return mark_safe(snippet)
+
+
+

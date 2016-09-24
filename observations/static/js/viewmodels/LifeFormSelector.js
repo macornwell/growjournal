@@ -58,7 +58,7 @@
       this._onSelectedKingdom = bind(this._onSelectedKingdom, this);
       this._resetData = bind(this._resetData, this);
       this.addKingdom = bind(this.addKingdom, this);
-      this.kingdoms = ko.observableArray();
+      this.kingdomDict = ko.observableArray();
       this.selectedKingdom = ko.observable();
       this.availableGenus = ko.observableArray();
       this.selectedGenus = ko.observable();

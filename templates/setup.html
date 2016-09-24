@@ -1,19 +1,23 @@
-{% extends "base.html" %}
+{% extends "window.html" %}
 {% load rest_framework %}
 {% load staticfiles %}
 
 {% block title %}Grow Journal - Setup{% endblock %}
-{% block body %}
-    <div class="container">
-        <div class="window">
-            <h1>Setup</h1>
-            <h2>System</h2>
-                <a class="btn btn-default btn-block" href="">Genus</a>
-                <a class="btn btn-default btn-block" href="">Species</a>
-                <a class="btn btn-default btn-block" href="">Variety</a>
-            <h2>User Config</h2>
-            <a class="btn btn-default btn-block" href="{% url 'add_site' %}">Sites</a>
-            <a class="btn btn-default btn-block" href="">Projects</a>
-        </div>
-    </div>
+{% block windowtitle %}Setup{% endblock%}
+{% block window %}
+{% if user_sites %}
+<h2>System Improvement</h2>
+    <a class="btn btn-default btn-block btn-lg" href="{% url 'add_genus' %}">Add Genus</a>
+    <a class="btn btn-default btn-block btn-lg" href="{% url 'add_species' %}">Add Species</a>
+    <a class="btn btn-default btn-block btn-lg" href="{% url 'add_variety' %}">Add Variety</a>
+{% endif %}
+<h2>User Configuration</h2>
+<a class="btn btn-default btn-block btn-lg" href="{% url 'settings' %}">Settings</a>
+<h2>Site Configuration</h2>
+<a class="btn btn-default btn-block btn-lg" href="{% url 'sites' %}">Sites</a>
+<a class="btn btn-default btn-block btn-lg" href="{% url 'list_site_inventory' %}">Site Inventory</a>
+{% if user_sites %}
+    <a class="btn btn-default btn-block btn-lg" href="">Projects</a>
+{% endif %}
 {% endblock %}
+{% block windowback %}window.location.href='{% url "home" %}'{% endblock %}

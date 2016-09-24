@@ -1,0 +1,171 @@
+{% extends "window.html" %}
+{% with stepCount=form.steps|length %}
+
+{% load bootstrap3 %}
+
+{% block windowtitle %}{{ form.model_type }}{% endblock %}
+{% block window %}
+{% bootstrap_messages %}
+{% block formbody %}
+<form method="POST">
+    {% csrf_token %}
+    <div id="wizard-pane" class="tsf-wizard tsf-wizard-1">
+    {% if form.steps|length > 1 %}
+        <div class="tsf-controls ">
+            <button id="left-wizard-button" type="button" data-type="prev" class="wizard-button pull-left right-wizard-button tsf-wizard-btn">
+                <-
+            </button>
+            <button id="right-wizard-button" type="button" data-type="next" class="wizard-button pull-right left-wizard-button tsf-wizard-btn">
+                ->
+            </button>
+        </div>
+        <div class="tsf-nav-step" >
+            <h3>Steps</h3>
+            <ul class="gsi-step-indicator triangle gsi-style-1  gsi-transition ">
+                {% for step in form.steps %}
+                    <li data-target="step-{{ forloop.counter }}"
+                        class="
+                        {% if forloop.counter == 1 %}
+                        current
+                        {% endif %}
+                        ">
+                        <span></span>
+                    </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div class="tsf-container">
+        <div class="tsf-content">
+            {% for step in form.steps %}
+                <div class="tsf-step step-{{ forloop.counter }} {% if forloop.counter == 1 %}active{% endif %} ">
+                    <fieldset>
+                        <legend>{{ step.legend }}</legend>
+                        <div class="row">
+                            <div class="tsf-step-content">
+                                {% for control in step.form_controls %}
+                                    <div class="form-group">
+                                        {% if control.template_path %}
+                                            {% include control.template_path with control=control %}
+                                        {% else %}
+                                            {{ control.generate_template }}
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="tsf-controls">
+            <button id="submit-wizard-button" type="submit" data-type="finish" class="btn btn-lg pull-right btn-default action-button">
+                SUBMIT
+            </button>
+            {% if is_editing_model %}
+                <button type="button" class="btn btn-lg action-button btn-danger pull-right" data-toggle="modal" data-target=".delete-window">DELETE</button>
+                <div class="modal fade delete-window" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title" id="mySmallModalLabel">Are You Sure?</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    Are you sure you want to delete this? There is no undoing this.
+                                </p>
+                                <button name="delete-button" type="submit" class="btn btn-danger">DELETE</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif%}
+        </div>
+    </div>
+    </div>
+</form>
+{% endblock %}
+{% endblock %}
+
+
+
+{% block scripts %}
+    <script src="/static/timon/js/tsf-wizard-plugin.js"></script>
+    <script src="/static/js/hammer-time.min.js"></script>
+    <script src="/static/js/hammer.min.js"></script>
+    <script type="application/javascript">
+
+    var setupWizardSwipe = function(){
+        var wizardPane = document.getElementById('wizard-pane');
+        var mc = new Hammer.Manager(wizardPane, {
+	        recognizers: [
+		    [Hammer.Swipe,{ direction: Hammer.DIRECTION_HORIZONTAL }]
+        ]});
+
+        var HAMMER_LEFT = 2;
+        var HAMMER_RIGHT = 4;
+        var leftButton = $("#left-wizard-button");
+        var rightButton = $("#right-wizard-button");
+        mc.on("swipe", function(ev) {
+            var direction = ev.direction;
+            if (direction == HAMMER_LEFT){
+                if ($('#right-wizard-button:visible').length > 0){
+                    rightButton.click();
+                }
+            }
+            else if (direction == HAMMER_RIGHT){
+                if ($('#left-wizard-button:visible').length > 0){
+                    leftButton.click();
+                }
+            }
+        });
+    };
+
+    $(document).ready(function(){
+        {% for step in form.steps %}
+            {% if step.scripts %}
+                {% for script in step.scripts %}
+                    {{ script }}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+
+    /*
+        $("#id-datetime").datetimepicker().find('input').addClass("form-control");
+        $('#datetimepicker').datetimepicker();
+     var rootstockGroup = $('#rootstock-group');
+        $('#rootstock-checkbox').change(function() {
+            if (this.checked){
+                rootstockGroup.show();
+            }
+            else {
+                rootstockGroup.hide();
+            }
+        });
+        $('input[type=checkbox][name=rootstock]').attr('checked', true);
+   */
+        $('.tsf-wizard-1').tsfWizard({
+            nextBtn: '->',
+            prevBtn: '<-',
+            finishBtn: '<span class="glyphicon glyphicon-star"></span>SUBMIT',
+            stepEffect: 'slideRightLeft',
+            stepStyle: 'style12',
+            navPosition: 'top',
+            stepTransition: true,
+            {% if form.steps|length > 1 %}
+            showButtons: true,
+            showStepNum: true,
+            {% endif %}
+            height: '340px'
+        });
+            {% if form.steps|length > 1 %}
+                setupWizardSwipe();
+            {% endif %}
+    });
+    </script>
+{% endblock %}
+{% endwith %}

@@ -6,6 +6,7 @@ import django.utils.timezone as timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.html import escape
+from taxonomy.models import UserTaxonomySettings
 
 
 LOG_DAYS_PER_PAGE = 5
@@ -20,6 +21,23 @@ def home(request):
 def setup(request):
     data = {}
     return render(template_name='setup.html', context=data, request=request)
+
+
+def settings_view(request):
+    if request.POST:
+        return post_settings(request)
+    data = {}
+    return render(template_name='user-settings.html', context=data, request=request)
+
+
+def post_settings(request):
+    useLatin = False
+    if 'use-latin' in request.POST:
+        useLatin = True
+    taxonomySettings = UserTaxonomySettings.objects.get_settings(request.user)
+    taxonomySettings.use_latin_name = useLatin
+    taxonomySettings.save()
+    return setup(request)
 
 """
 def home(request):

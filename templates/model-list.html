@@ -1,0 +1,22 @@
+{% extends "window.html" %}
+{% block title %}Grow Journal - {{ title }}{% endblock %}
+
+{% block windowtitle %}{{ plural_name }}{% endblock %}
+{% block window %}
+    <div class="row">
+    <ul class="modellist-style">
+        {% for entry in list_entries %}
+            <li>
+                <a class="btn btn-default btn-block list-selection-button" href="{{ entry.edit_url }}">
+                    {% if model_template_path %}
+                        {% include model_template_path with model=entry.model %}
+                    {% else %}
+                        {{ entry.model }}
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    </div>
+    <a class="btn btn-default btn-lg pull-right action-button" href="{{ add_url }}">Add {{ singular_name }}</a>
+{% endblock %}

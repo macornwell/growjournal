@@ -1,0 +1,15 @@
+{% extends "model-list.html" %}
+{% block title %}Grow Journal - User Settings{% endblock %}
+
+{% block windowtitle %}User Settings{% endblock %}
+{% block window %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label>Use Latin Names</label>
+        <input class="form-control" name="use-latin" type="checkbox" {% if use_latin %}checked{% endif %}>
+    </div>
+    <button class="pull-right btn btn-default btn-lg action-button" type="submit">SUBMIT</button>
+</form>
+{% endblock %}
+{% block windowback %}window.location.href = '{% url "setup" %}'{% endblock %}

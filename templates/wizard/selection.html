@@ -1,0 +1,8 @@
+{% load wizard_tags %}
+
+<label>{{ control.label }}</label>
+<select class="form-control" name="{{ control.name }}">
+    {% for value, name in control.selections %}
+        <option value="{{ value }}" {% set_selected_option forloop.counter value control.selected_value %}>{{ name }}</option>
+    {% endfor %}
+</select>

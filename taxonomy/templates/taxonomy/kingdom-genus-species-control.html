@@ -1,0 +1,49 @@
+<div class="genus-control">
+    <div class="form-group">
+        <label for="id-kingdom">Select Kingdom</label>
+        <select id="id-kingdom" class="form-control" name="kingdom"
+                data-bind="options: kingdomList,
+                           optionsValue: 'id',
+                           value: selectedKingdom,
+                           optionsText: '{% if use_latin %}latinName{% else %}name{% endif %}'"></select>
+    </div>
+    <div class="form-group">
+        <label for="id-genus">Select Genus</label>
+        <select id="id-genus" class="form-control" name="genus"
+                data-bind="options: genusList,
+                           optionsValue: 'id',
+                           value: selectedGenus,
+                           optionsText: '{% if use_latin %}latinName{% else %}name{% endif %}'"></select>
+    </div>
+    {% if control.get_species_list %}
+    <div class="form-group">
+        <label for="id-species">Select Species</label>
+        <select id="id-species" class="form-control" name="species"
+                data-bind="options: speciesList,
+                           optionsValue: 'id',
+                           value: selectedSpecies,
+                           optionsText: '{% if use_latin %}latinName{% else %}name{% endif %}'"></select>
+    </div>
+    {% endif %}
+</div>
+<script src="/static/js/taxonomy/data.js"></script>
+<script src="/static/js/taxonomy/kingdom-genus-species-control.js"></script>
+<script>
+    $(document).ready(function(){
+        var dataLayer = new grow_journal.TaxonomyDataAccess();
+        {% for kingdom in control.get_kingdom_list %}
+            dataLayer.addKingdom({{ kingdom.kingdom_id }}, '{{ kingdom.name }}', '{{ kingdom.latin_name }}');
+        {% endfor %}
+        {% for genus in control.get_genus_list %}
+            dataLayer.addGenus({{ genus.kingdom.kingdom_id }}, {{ genus.genus_id }}, '{{ genus.name }}', '{{ genus.latin_name }}');
+        {% endfor %}
+        {% if control.get_species_list %}
+            {% for species in control.get_species_list %}
+                dataLayer.addSpecies({{ species.genus.genus_id }}, {{ species.species_id}}, '{{ species.name }}', '{{ species.latin_name }}');
+            {% endfor %}
+        {% endif %}
+        var viewModel = new grow_journal.KingdomGenusSpeciesControl(dataLayer);
+        ko.applyBindings(viewModel);
+
+    });
+</script>

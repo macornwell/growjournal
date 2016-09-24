@@ -90,7 +90,8 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
-                #'grow_journal.context_processors.main_menu',
+                'core.context_processors.user_sites',
+                'taxonomy.context_processors.use_latin_names'
             ],
         },
     },

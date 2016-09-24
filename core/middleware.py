@@ -38,3 +38,5 @@ class LocalTimezoneMiddleware(object):
              timezone.activate(user_timezone)
         else:
              timezone.deactivate()
+
+

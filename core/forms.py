@@ -10,8 +10,12 @@ class WizardForm:
     model = None
     steps = []
 
+    def apply_instance(self, instance):
+        raise NotImplemented()
+
 
 class WizardStep:
+    name = None
     legend = None
     form_controls = []
     scripts = []
@@ -23,18 +27,12 @@ class WizardStep:
 class WizardControl:
     template_path = None
     template = None
-
-    def generate_template(self):
-        raise NotImplemented()
-
-
-class SimpleControl(WizardControl):
     label = None
     name = None
     id = None
     classes = []
 
-    def get_kargs(self):
+    def generate_context(self):
         return {
             'id': self.id,
             'label': self.label,
@@ -43,7 +41,7 @@ class SimpleControl(WizardControl):
         }
 
     def generate_template(self):
-        kwargs = self.get_kargs()
+        kwargs = self.generate_context()
         snippet = format_html(self.template, kwargs)
         return mark_safe(snippet)
 
@@ -51,46 +49,50 @@ class SimpleControl(WizardControl):
         self.__dict__.update(kwargs)
 
 
-class CheckboxControl(SimpleControl):
+
+class SimpleSelectionControl(WizardControl):
+    """
+    selections
+    Format is a tuple of the 'value' and 'name' for an <option value='value'>name</option>
+    """
+    selections = ()
+    selected_value = None
+    template_path = 'wizard/selection.html'
+
+    def generate_context(self):
+        z = super(SimpleSelectionControl, self).generate_context().copy()
+        z['selected_value'] = self.selected_value
+        return z
+
+class CheckboxControl(WizardControl):
     value = 'checked'
     is_checked = False
-    template = """
-    <label>{{ label }}</label>
-    <input type="checkbox"
-        {% if id %}
-            id="{{ id }}"
-        {% endif %}
-        name="{{ name }}"
-        value="{{ value }}"
-        class="form-control
-        {% for className in classes %}
-        {% endfor %}
-        "
-        {% if is_checked %}
-            checked
-        {% endif %}
-        >
-    """
+    template_path = 'wizard/checkbox.html'
 
 
-class TextBoxControl(SimpleControl):
-    template = """
-    <label>{{ label }}</label>
-    <input class="form-control" type="text" name="{{ name }}">
-    """
-
+class TextBoxControl(WizardControl):
+    template_path = 'wizard/textbox.html'
 
 
 class SiteForm(WizardForm):
     model = Site
     model_type = 'Site'
-    steps = (
-            WizardStep(legend='Add New', form_controls=[
+    steps = ()
+
+    def __init__(self):
+        self.steps = (
+            WizardStep(legend='', form_controls=[
                 TextBoxControl(label='Name', name='name'),
                 CheckboxControl(label='Is Publicly Viewable?', name='public-viewable', is_checked=True),
                 CheckboxControl(label='Is Publicly Joinable?', name='public-joinable'),
             ]),
-    )
+        )
+
+
+    def apply_instance(self, site):
+        self.steps[0].form_controls[0].value = site.name
+        self.steps[0].form_controls[1].is_checked = site.is_public_viewable
+        self.steps[0].form_controls[2].is_checked = site.is_public_joinable
 
 
 

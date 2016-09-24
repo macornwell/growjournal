@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
-from core.models import BaseModel
+from core.models import BaseModel, BaseUserActivityOnSiteModel
 from geography.models import Location
+from taxonomy.managers import SiteInventoryManager, UserTaxonomySettingsManager, KingdomManager, GenusManager, LifeFormManager
 
 PLANT_KINGDOM_NAME = 'Plant Kingdom'
 ANIMAL_KINGDOM_NAME = 'Animal Kingdom'
@@ -37,17 +38,23 @@ def get_unknown_rootstock():
 
 
 class UserTaxonomySettings(BaseModel):
+    objects = UserTaxonomySettingsManager()
     user = models.OneToOneField(User)
     use_latin_name = models.BooleanField(default=True)
 
 
 class Kingdom(BaseModel):
+    objects = KingdomManager()
     kingdom_id = models.AutoField(primary_key=True)
     latin_name = models.CharField(max_length=30, unique=True)
     name = models.CharField(max_length=30, unique=True)
 
+    def __str__(self):
+        return self.latin_name
+
 
 class Genus(BaseModel):
+    objects = GenusManager()
     genus_id = models.AutoField(primary_key=True)
     kingdom = models.ForeignKey(Kingdom)
     latin_name = models.CharField(max_length=30, unique=True)
@@ -70,11 +77,17 @@ class Species(BaseModel):
     class Meta:
         unique_together = (("genus", "name"),)
 
+    def save(self, *args, **kwargs):
+        super(Species, self).save(*args, **kwargs)
+        LifeForm.objects.get_or_create_from_species(self)
+
 
 class Variety(BaseModel):
     variety_id = models.AutoField(primary_key=True)
     species = models.ForeignKey(Species)
     name = models.CharField(max_length=40)
+    name_denormalized = models.CharField(max_length=50, blank=True)
+    latin_name = models.CharField(max_length=50, blank=True)
     parent_a = models.ForeignKey('Variety', blank=True, null=True, related_name='first_children')
     parent_b = models.ForeignKey('Variety', blank=True, null=True, related_name='second_children')
     history = models.TextField(blank=True, null=True)
@@ -87,6 +100,13 @@ class Variety(BaseModel):
 
     class Meta:
         unique_together = (("species", "name"),)
+
+    def save(self, *args, **kwargs):
+        if not self.latin_name:
+            self.latin_name = "{0} '{1}'".format(self.latin_name, self.name)
+        if not self.name_denormalized:
+            self.name_denormalized = '{0} {1}'.format(self.name, self.species.name)
+        super(BaseModel, self).save(*args, **kwargs)
 
 
 class Rootstock(BaseModel):
@@ -102,20 +122,29 @@ class Rootstock(BaseModel):
 
 
 class LifeForm(BaseModel):
+    objects = LifeFormManager()
     life_form_id = models.AutoField(primary_key=True)
     kingdom = models.ForeignKey(Kingdom)
     genus = models.ForeignKey(Genus)
     species = models.ForeignKey(Species)
     variety = models.ForeignKey(Variety, blank=True, null=True)
     rootstock = models.ForeignKey(Rootstock, blank=True, null=True)
+    name = models.CharField(max_length=50, blank=True)
+    latin_name = models.CharField(max_length=50, blank=True)
 
     class Meta:
         unique_together = (('kingdom', 'genus', 'species', 'variety', 'rootstock'),)
 
     def save(self, *args, **kwargs):
+        self._perform_validation()
+        self._perform_denormalization()
+        super(BaseModel, self).save(*args, **kwargs)
+        self._perform_additional_saving()
+
+    def _perform_validation(self):
         if self.genus.kingdom != self.kingdom:
             raise Exception('The kingdom for the genus does not match the kingdom selected.')
-        if self.species.kingdom != self.kingdom:
+        if self.species.genus.kingdom != self.kingdom:
             raise Exception('The kingdom for the species does not match the kingdom selected.')
         if self.species.genus != self.genus:
             raise Exception('The genus for the species does not match the genus selected.')
@@ -125,24 +154,42 @@ class LifeForm(BaseModel):
         if self.rootstock:
             if self.kingdom.name != PLANT_KINGDOM_NAME:
                 raise Exception('Only Plants can be grafted.')
-        super(BaseModel, self).save(*args, **kwargs)
+            if not self.variety:
+                raise Exception('A rootstock requires a variety.')
+
+    def _perform_denormalization(self):
+        if not self.name:
+            if self.variety:
+                self.name = self.variety.name_denormalized
+            else:
+                self.name = self.species.name
+        if not self.latin_name:
+            self.latin_name = self.species.latin_name
+            if self.variety:
+                self.latin_name = "{0} '{1}'".format(self.latin_name, self.name)
+
+    def _perform_additional_saving(self):
+        if self.rootstock:
+            if LifeForm.objects.has_variety(self.variety_id):
+                pass
+
+    def __str__(self):
+        line = self.species.name
+        if self.variety:
+            line += ' ({0})'.format(self.variety.name)
+        if self.rootstock:
+            line += ' grafted to {0}'.format(self.rootstock.denormalized_name)
+        return line
 
 
-class GraftedLifeForm(BaseModel):
-    grafted_life_form_id = models.AutoField(primary_key=True)
-    scion = models.ForeignKey(LifeForm)
-    rootstock = models.ForeignKey(Rootstock)
+class SiteInventory(BaseUserActivityOnSiteModel):
+    objects = SiteInventoryManager()
+    site_inventory_id = models.AutoField(primary_key=True)
+    life_form = models.ForeignKey(LifeForm)
+    count = models.PositiveIntegerField(default=0)
 
-    class Meta:
-        unique_together = (('scion', 'rootstock'),)
-
-    def save(self, *args, **kwargs):
-        if self.scion.kingdom.name != PLANT_KINGDOM_NAME:
-            raise Exception('Only Plants can be grafted.')
-        super(BaseModel, self).save(*args, **kwargs)
-
-
-
+    def __str__(self):
+        return self.life_form.__str__()
 
 
 

@@ -2,7 +2,7 @@ from django.utils import timezone
 from django.db import models
 from core.managers import NameAscendingOrderManager
 from core.models import BaseUserActivityOnSiteModel, BaseModel
-from taxonomy.models import LifeForm, GraftedLifeForm, Kingdom
+from taxonomy.models import LifeForm, Kingdom
 
 AFFINITY_STATES = (
     ('pos', 'Positive'),
@@ -56,7 +56,6 @@ class Observation(BaseUserActivityOnSiteModel):
     observation_type = models.ForeignKey(ObservationType)
     datetime = models.DateTimeField(default=timezone.now)
     life_form = models.ForeignKey(LifeForm, blank=True, null=True)
-    grafted_life_form = models.ForeignKey(GraftedLifeForm, blank=True, null=True)
     affinity = models.CharField(max_length=3, default='neu', choices=AFFINITY_STATES)
     summary = models.CharField(max_length=100, blank=True, null=True)
     observation = models.TextField()
@@ -67,7 +66,6 @@ class Prediction(BaseUserActivityOnSiteModel):
     observation = models.ForeignKey(Observation, blank=True, null=True)
     datetime = models.DateTimeField()
     life_form = models.ForeignKey(LifeForm, blank=True, null=True)
-    grafted_life_form = models.ForeignKey(GraftedLifeForm, blank=True, null=True)
     affinity = models.CharField(max_length=3, default='neu', choices=AFFINITY_STATES)
     summary = models.CharField(max_length=100, blank=True, null=True)
     details = models.TextField()

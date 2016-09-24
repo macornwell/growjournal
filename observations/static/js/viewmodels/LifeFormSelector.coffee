@@ -15,7 +15,7 @@ class LifeForm
 
 class LifeFormSelector
   constructor: (@__easyData)->
-    @kingdoms = ko.observableArray()
+    @kingdomDict = ko.observableArray()
     @selectedKingdom = ko.observable()
     @availableGenus = ko.observableArray()
     @selectedGenus = ko.observable()
