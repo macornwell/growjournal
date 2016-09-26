@@ -1,0 +1,4 @@
+<label>{{ control.label }}</label>
+<input class="form-control" type="number" name="{{ control.name }}"
+        {% if control.min != -1%}min="{{ control.min }}"{% endif %}
+        {% if control.max != -1 %}max="{{ control.max }}"{% endif %}>

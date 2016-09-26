@@ -15,6 +15,12 @@ class Species
 
   constructor: (@genus, @id, @name, @latinName)->
 
+class LifeForm
+
+  constructor: (@id, @name, @latinName, @species=null, @variety=null, @rootstock=null)->
+    ''
+root.grow_journal.LifeForm = LifeForm
+
 
 class TaxonomyDataAccess
 

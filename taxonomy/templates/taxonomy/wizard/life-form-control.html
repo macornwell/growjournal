@@ -1,0 +1,70 @@
+<div id="life-form-control">
+    <div class="form-group">
+        <label>Select Life Form</label>
+        <input class="typeahead form-control" type="text" placeholder="Type In Life Form">
+        <input hidden data-bind="value: selectedLifeForm" name="life-form" type="number">
+        <input hidden name="site" value="{% with user_sites|first as activeSite %}{{ activeSite.site_id }}{% endwith %}">
+    </div>
+</div>
+
+<script type="application/javascript" src="/static/js/typeahead.bundle.js"></script>
+<script src="/static/js/taxonomy/life-form-control.js"></script>
+<script>
+    $(document).ready(function(){
+        var vm = new grow_journal.LifeFormControl();
+        ko.applyBindings(vm);
+
+        function setSelectedLifeForm(selected){
+            vm.setSelectedLifeForm(selected['value']);
+        }
+
+        var lifeFormSource = new Bloodhound({
+          datumTokenizer: function(datum) {
+            return Bloodhound.tokenizers.whitespace(datum.value);
+          },
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: {
+            wildcard: '%QUERY',
+            url: "/lifeform/query/%QUERY",
+            transform: function(response) {
+                vm.clearLifeForms();
+              return $.map(response, function(data, id) {
+                var lifeForm = new grow_journal.LifeForm(data['life_form_id'], data['name'], data['latin_name']);
+                var displayName = data['name'] + ' (' + {% if use_latin %}data['latin_name']{% else %}data['species']['name']{% endif %} + ')';
+                vm.addLifeForm(displayName, lifeForm);
+                return {
+                  value: displayName
+                };
+              });
+            }
+          }
+        });
+
+        $('.typeahead').typeahead(null, {
+            minLength: 3,
+            limit: 10,
+            display: 'value',
+            source: lifeFormSource
+        }).bind('typeahead:selected', function(event, suggestion){
+                setSelectedLifeForm(suggestion);
+            }).bind('keypress', function(){
+                setSelectedLifeForm($(this).val());
+            });
+        /*
+
+        $('.typeahead').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            },
+            {
+                name: 'species',
+                source: substringMatcher(species)
+            }).bind('typeahead:selected', function(event, suggestion){
+                setSelectedLifeForm(suggestion);
+            }).bind('keypress', function(){
+                setSelectedLifeForm($(this).val());
+            });
+            */
+    });
+</script>

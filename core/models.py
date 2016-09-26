@@ -49,7 +49,10 @@ class Site(BaseUserActivityModel):
         super(BaseUserActivityModel, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        display = self.name
+        if self.deleted:
+            display += ' (deleted)'
+        return display
 
 
 class UserCoreSettings(BaseModel):

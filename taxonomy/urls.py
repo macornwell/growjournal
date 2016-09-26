@@ -1,5 +1,9 @@
 from django.conf.urls import url
-from taxonomy.views import list_site_inventory, add_site_inventory, list_genus, add_genus, edit_genus, list_species, add_species, edit_species, add_variety, list_variety, edit_variety
+from taxonomy.views import list_site_inventory, add_site_inventory, \
+    list_genus, add_genus, edit_genus, \
+    list_species, add_species, edit_species, \
+    add_variety, list_variety, edit_variety, \
+    life_form_search
 
 
 urlpatterns = [
@@ -17,4 +21,6 @@ urlpatterns = [
     url(r'^variety/$', name='list_variety', view=list_variety),
     url(r'^variety/add/$', name='add_variety', view=add_variety),
     url(r'^variety/edit/(?P<varietyID>\d+)$', name='edit_variety', view=edit_variety),
+
+    url(r'^lifeform/query/(?P<query>[a-z\dA-Z]+)', name='life_form_search', view=life_form_search),
 ]

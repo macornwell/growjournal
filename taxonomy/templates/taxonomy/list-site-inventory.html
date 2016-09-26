@@ -2,20 +2,29 @@
 {% load grow_journal_core_tags %}
 {% load taxonomy_tags %}
 
+{% block title %}Grow Journal - Life Forms on Site{% endblock %}
+{% block windowtitle %}Life Forms on Site{% endblock %}
 {% block window %}
+{% if list_entries|length == 0 %}
+    <p>
+        No Life Forms on Site. Click below to add some.
+    </p>
+{% endif %}
 {% for kingdom in list_entries|get_ordered_by_str %}
-    <h2 class="text-center">{% taxonomy_name kingdom use_latin %}</h2>
-    {% for genus in list_entries|get_dict_item:kingdom|get_ordered_by_str%}
+    <h2 class="">{% taxonomy_name kingdom use_latin %}</h2>
+    {% with list_entries|get_dict_item:kingdom|order_taxonomy:use_latin as genusList %}
+    {% for genus in genusList %}
         <h3>{% taxonomy_name genus use_latin %}</h3>
         <ul class="modellist-style">
-            {% for model in list_entries|get_dict_item:kingdom|get_dict_item:genus|get_ordered_by_str %}
+            {% for model in list_entries|get_dict_item:kingdom|get_dict_item:genus|order_site_inventory:use_latin %}
             <li>
                 {% taxonomy_name model use_latin %}
             </li>
             {% endfor %}
         </ul>
     {% endfor %}
+    {% endwith %}
 {% endfor %}
 
-<a class="btn btn-default btn-block btn-lg" href="{% url 'add_site_inventory' %}">Add Inventory</a>
+<a class="btn btn-default btn-block btn-lg" href="{% url 'add_site_inventory' %}">Add Life Forms</a>
 {% endblock %}

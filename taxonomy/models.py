@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from core.models import BaseModel, BaseUserActivityOnSiteModel
+from core.models import BaseModel,  Site
 from geography.models import Location
 from taxonomy.managers import SiteInventoryManager, UserTaxonomySettingsManager, KingdomManager, GenusManager, LifeFormManager
 
@@ -103,10 +103,11 @@ class Variety(BaseModel):
 
     def save(self, *args, **kwargs):
         if not self.latin_name:
-            self.latin_name = "{0} '{1}'".format(self.latin_name, self.name)
+            self.latin_name = "{0} '{1}'".format(self.species.latin_name, self.name)
         if not self.name_denormalized:
             self.name_denormalized = '{0} {1}'.format(self.name, self.species.name)
         super(BaseModel, self).save(*args, **kwargs)
+        LifeForm.objects.get_or_create_from_variety(self)
 
 
 class Rootstock(BaseModel):
@@ -160,7 +161,7 @@ class LifeForm(BaseModel):
     def _perform_denormalization(self):
         if not self.name:
             if self.variety:
-                self.name = self.variety.name_denormalized
+                self.name = self.variety.name
             else:
                 self.name = self.species.name
         if not self.latin_name:
@@ -174,22 +175,29 @@ class LifeForm(BaseModel):
                 pass
 
     def __str__(self):
-        line = self.species.name
+        line = ''
         if self.variety:
-            line += ' ({0})'.format(self.variety.name)
+            line += self.variety.name + ' ('
+
+        line += self.species.name
+        if self.variety:
+            line += ')'
         if self.rootstock:
             line += ' grafted to {0}'.format(self.rootstock.denormalized_name)
         return line
 
 
-class SiteInventory(BaseUserActivityOnSiteModel):
+class SiteInventory(BaseModel):
     objects = SiteInventoryManager()
     site_inventory_id = models.AutoField(primary_key=True)
+    site = models.ForeignKey(Site)
     life_form = models.ForeignKey(LifeForm)
     count = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        unique_together = ('site', 'life_form')
+
     def __str__(self):
         return self.life_form.__str__()
-
 
 

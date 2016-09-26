@@ -8,12 +8,19 @@ def taxonomy_name(lifeForm, useLatin):
     return get_taxonomy_name(lifeForm, useLatin)
 
 
-@register.assignment_tag
-def order_genus(genusList, useLatin):
+@register.filter
+def order_taxonomy(taxonomyList, useLatin):
     if useLatin:
-        return sorted(genusList, key=lambda x: x.latin_name)
+        return sorted(taxonomyList, key=lambda x: x.latin_name)
     else:
-        return sorted(genusList, key=lambda x: x.name)
+        return sorted(taxonomyList, key=lambda x: x.name)
+
+@register.filter
+def order_site_inventory(siteInventorylist, useLatin):
+    if useLatin:
+        return sorted(siteInventorylist, key=lambda x: x.life_form.latin_name)
+    else:
+        return sorted(siteInventorylist, key=lambda x: x.life_form.name)
 
 
 

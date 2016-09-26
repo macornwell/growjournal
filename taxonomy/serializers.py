@@ -25,6 +25,10 @@ class VarietySerializer(serializers.HyperlinkedModelSerializer):
         fields = ('variety_id', 'species', 'name', 'name_denormalized', 'latin_name', 'origin_location')
 
 
+class LifeFormSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = LifeForm
+        fields = ('life_form_id', 'species', 'variety', 'rootstock', 'name', 'latin_name')
 
 
 

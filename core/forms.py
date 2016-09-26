@@ -6,7 +6,7 @@ from datetimewidget.widgets import DateTimeWidget
 
 
 class WizardForm:
-    model_type = None
+    form_title = None
     model = None
     steps = []
 
@@ -15,8 +15,8 @@ class WizardForm:
 
 
 class WizardStep:
-    name = None
-    legend = None
+    name = ''
+    legend = ''
     form_controls = []
     scripts = []
 
@@ -27,9 +27,9 @@ class WizardStep:
 class WizardControl:
     template_path = None
     template = None
-    label = None
-    name = None
-    id = None
+    label = ''
+    name = ''
+    id = ''
     classes = []
 
     def generate_context(self):
@@ -47,6 +47,13 @@ class WizardControl:
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
+
+
+
+class NumberInputControl(WizardControl):
+    template_path = 'wizard/number-input-control.html'
+    min = -1
+    max = -1
 
 
 
