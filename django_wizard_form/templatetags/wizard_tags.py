@@ -1,8 +1,14 @@
 from django import template
-from django.core.urlresolvers import NoReverseMatch, reverse
-from django.utils.html import escape, format_html
-from django.utils.safestring import mark_safe
-from core.utils import get_summary as coreGetSummary
+
+
+def get_summary(totalText, summary=None, maxSummarySize=25):
+    text = summary
+    if not text:
+        text = totalText[:maxSummarySize]
+        if len(totalText) > maxSummarySize:
+            text += '...'
+    return text
+
 
 register = template.Library()
 @register.simple_tag

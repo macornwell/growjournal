@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 from core.views import CRUDView
 from core.services import get_active_site
 from purchase.models import Store, PurchaseEvent
@@ -12,6 +12,9 @@ class StoreCRUDView(CRUDView):
     singular = 'Store'
     plural = 'Stores'
 
+    def get_back_list_url(self):
+        return reverse('setup')
+
     def get_model(self, modelID):
         return Store.objects.get(store_id=modelID)
 
@@ -20,9 +23,11 @@ class StoreCRUDView(CRUDView):
 
     def post(self, request, model=None):
         name = request.POST['name']
+        url = request.POST['url']
         if not model:
             model = Store()
         model.name = name
+        model.url = url
         model.save()
         return self.list(request)
 
@@ -32,7 +37,9 @@ class PurchaseCRUDView(CRUDView):
     form_type = PurchaseForm
     singular = 'Purchase'
     plural = 'Purchases'
-    back_list_url = reverse_lazy('home')
+
+    def get_back_list_url(self):
+        return reverse('home')
 
     def get_model(self, modelID):
         return PurchaseEvent.objects.get(purchase_event_id=modelID)

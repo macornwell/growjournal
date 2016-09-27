@@ -1,112 +1,10 @@
-from django.views.generic.list import ListView
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy, reverse
 from core.models import Site, Unit, Project
 from core.forms import SiteForm, UnitForm, ProjectForm
 from core.services import get_user_core_settings
-
-WIZARD_FORM_TEMPLATE = 'wizard/wizard-form.html'
-
-def get_back_url(url):
-    return "window.location.href = '{0}'".format(url)
-
-def get_back_to_settings_string():
-    url = reverse('setup')
-    return get_back_url(url)
-
-
-class ListEntry:
-    edit_url = None
-    model = None
-
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
-
-
-def list_model_view(request, title, addUrl, singularName, pluralName, listEntries, template=None, modelTemplatePath=None, backButtonUrl=None):
-    data = {
-        'title': title,
-        'add_url': addUrl,
-        'singular_name': singularName,
-        'plural_name': pluralName,
-        'list_entries': listEntries,
-        'model_template_path': modelTemplatePath,
-        'back_button_url': backButtonUrl,
-    }
-    if not template:
-        return render(request, 'model-list.html', data)
-    else:
-        return render(request, template, data)
-
-
-class CRUDView:
-    model_type = None
-    form_type = None
-    list_view_name = None
-    singular = None
-    plural = None
-    back_list_url = None
-
-    def get_edit_url(self):
-        return 'edit_{0}'.format(self.singular.lower())
-
-    def get_list_url(self):
-        return self.plural.lower()
-
-    def get_add_url(self):
-        return 'add_{0}'.format(self.singular.lower())
-
-    def get_id(self, model):
-        raise NotImplemented('get_id')
-
-    def get_model(self, modelID):
-        raise NotImplemented('get_model')
-
-    def post(self, request, model=None):
-        raise NotImplemented('post')
-
-    def create_form(self, request):
-        return self.form_type()
-
-    def list(self, request):
-        entries = []
-        for model in self.model_type.objects.all():
-            entries.append(ListEntry(model=model, edit_url=reverse(self.get_edit_url(), kwargs={'modelID': self.get_id(model)})))
-        backUrl = self.back_list_url
-        if not backUrl:
-            backUrl = reverse('settings')
-        backUrl = get_back_url(backUrl)
-        return list_model_view(request, self.plural, reverse(self.get_add_url()), self.singular, self.plural, entries, backButtonUrl=backUrl)
-
-    def add(self, request):
-        data = {}
-        if request.POST:
-            return self.post(request)
-        form = self.create_form(request)
-        data['form'] = form
-        return render(request, WIZARD_FORM_TEMPLATE, data)
-
-    def edit(self, request, modelID):
-        data = {}
-        model = self.get_model(modelID)
-        if request.POST:
-            if 'delete-button' in request.POST:
-                return self.delete(request, model)
-            return self.post(request, model)
-        form = self.create_form(request)
-        form.apply_instance(model)
-        data['form'] = form
-        data['is_editing_model'] = True
-        return render(request, WIZARD_FORM_TEMPLATE, data)
-
-    def delete(self, request, model):
-        model.delete()
-        return self.list(request)
-
-"""
-Sites
-"""
+from django_wizard_crud_view.views import CRUDView, ListEntry
 
 def change_site(request, siteID):
     user = request.user
@@ -149,7 +47,7 @@ class SiteCRUDView(CRUDView):
         entries = []
         for site in Site.objects.filter(user=request.user):
             entries.append(ListEntry(model=site, edit_url=reverse(self.get_edit_url(), kwargs={'modelID': self.get_id(site)})))
-        return list_model_view(request, self.plural, reverse(self.get_add_url()), self.singular, self.plural, entries, backButtonUrl=get_back_to_settings_string())
+        return self.list_model_view(request, self.plural, reverse(self.get_add_url()), self.singular, self.plural, entries, backButtonUrl=reverse('setup'))
 
 
 class UnitCRUDView(CRUDView):
@@ -157,6 +55,9 @@ class UnitCRUDView(CRUDView):
     form_type = UnitForm
     singular = 'Unit'
     plural = 'Units'
+
+    def get_back_list_url(self):
+        return reverse('setup')
 
     def get_model(self, modelID):
         return Unit.objects.get(unit_id=modelID)
@@ -178,6 +79,9 @@ class ProjectCRUDView(CRUDView):
     form_type = ProjectForm
     singular = 'Project'
     plural = 'Projects'
+
+    def get_back_list_url(self):
+        return reverse('setup')
 
     def get_model(self, modelID):
         return Project.objects.get(project_id=modelID)

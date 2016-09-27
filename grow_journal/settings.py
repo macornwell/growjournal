@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'rest_framework',
     'grow_journal',
+    'django_wizard_form',
+    'django_wizard_crud_view',
     'bootstrap3',
     'datetimewidget',
     'geography',

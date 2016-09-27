@@ -1,4 +1,7 @@
-from core.forms import WizardForm, WizardStep, TextBoxControl, NumberInputControl, SimpleSelectionControl, ProjectSelectionControl
+from django_wizard_form.form_controls import TextBoxControl, NumberInputControl
+from django_wizard_form.forms import WizardForm, WizardStep
+
+from core.form_controls import ProjectSelectionControl
 from purchase.models import Store, PurchaseEvent
 from taxonomy.forms import LifeFormControl
 
