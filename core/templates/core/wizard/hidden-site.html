@@ -1,0 +1,1 @@
+<input hidden name="site" value="{% with user_sites|first as activeSite %}{{ activeSite.site_id }}{% endwith %}">

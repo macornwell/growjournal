@@ -135,7 +135,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='graftedlifeform',
             name='rootstock',
-            field=models.ForeignKey(default=taxonomy.models.get_unknown_rootstock, to='taxonomy.Rootstock'),
+            field=models.ForeignKey(to='taxonomy.Rootstock'),
         ),
         migrations.AddField(
             model_name='graftedlifeform',

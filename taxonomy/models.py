@@ -4,8 +4,7 @@ from core.models import BaseModel,  Site
 from geography.models import Location
 from taxonomy.managers import SiteInventoryManager, UserTaxonomySettingsManager, KingdomManager, GenusManager, LifeFormManager
 
-PLANT_KINGDOM_NAME = 'Plant Kingdom'
-ANIMAL_KINGDOM_NAME = 'Animal Kingdom'
+
 
 DWARFING_CHOICES = (
     ('vd', 'Very-Dwarfing'),
@@ -13,28 +12,6 @@ DWARFING_CHOICES = (
     ('sd', 'Semi-Dwarf'),
     ('f', 'Full-Size')
 )
-
-
-def get_animal_kingdom():
-    return Kingdom.objects.get_or_create(name=ANIMAL_KINGDOM_NAME, latin_name='Animalia')[0]
-
-
-def get_plant_kingdom():
-    return Kingdom.objects.get_or_create(name=PLANT_KINGDOM_NAME, latin_name='Plantae')[0]
-
-
-def get_unknown_rootstock():
-    """
-    unknownRootstock = Rootstock.objects.filter(denormalized_name='Unknown').first()
-    if not unknownRootstock:
-        plantKingdom, created = Kingdom.objects.get_or_create(name='Plant Kingdom', latin_name='Plantae')
-        unknownGenus, created = Genus.objects.get_or_create(name='Unknown', latin_name='Unknown', kingdom_id=plantKingdom.kingdom_id)
-        unknownSpecies, created = Species.objects.get_or_create(name='Unknown', latin_name='Unknown', genus=unknownGenus)
-        unknownVariety, created = Variety.objects.get_or_create(name='Unknown', latin_name='Unknown', species=unknownSpecies)
-        unknownRootstock, created = Rootstock.objects.get_or_create(variety=unknownVariety, denormalized_name=unknownVariety.name)
-    """
-    unknownRootstock = ""
-    return unknownRootstock
 
 
 class UserTaxonomySettings(BaseModel):
@@ -117,7 +94,7 @@ class Rootstock(BaseModel):
     dwarfing = models.CharField(max_length=2, choices=DWARFING_CHOICES)
 
     def save(self, *args, **kwargs):
-        if self.variety.species.kingdom.name != PLANT_KINGDOM_NAME:
+        if self.variety.species.kingdom.kingdom_id != Kingdom.objects.get_plant_kingdom().kingdom_id:
             raise Exception('Only Plants can be rootstocks.')
         super(BaseModel, self).save(*args, **kwargs)
 

@@ -14,8 +14,9 @@
             <div class="main-controls row-fluid">
                 <div class="col-xs-6 main-left">
                     {% if user_sites %}
-                    <a class="btn btn-default btn-block btn-lg" href="{% url 'add_observation' %}">Harvest</a>
-                    <a class="btn btn-default btn-block btn-lg">Plant</a>
+                        <a class="btn btn-default btn-block btn-lg" href="{% url 'add_observation' %}">Harvest</a>
+                        <a class="btn btn-default btn-block btn-lg">Plant</a>
+                        <a class="btn btn-default btn-block btn-lg" href="{% url 'purchases' %}">Purchases</a>
                     {% endif %}
                     <a class="btn btn-default btn-block btn-lg" href="{% url 'setup' %}">Setup</a>
                     {% if not user_sites %}

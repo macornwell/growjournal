@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import render
-from core.views import get_add_model_form
 from observations.models import Observation, ObservationType
-from taxonomy.models import ANIMAL_KINGDOM_NAME, PLANT_KINGDOM_NAME, Kingdom
+from taxonomy.models import Kingdom
 from observations.forms import ObservationForm
 
 ADD_OBSERVATION_TEMPLATE = 'observations/add_observation_model.html'
 
+def add_observation(request):
+    pass
+"""
 def _get_kingdoms_in_order():
     return sorted(Kingdom.objects.all(), key=lambda x: x.name)
 
@@ -24,3 +26,4 @@ def add_observation(request):
     }
     return render(request, 'observations/add_observation.html', context=data)
 
+"""

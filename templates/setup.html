@@ -7,17 +7,37 @@
 {% block window %}
 {% if user_sites %}
 <h2>System Improvement</h2>
-    <a class="btn btn-default btn-block btn-lg" href="{% url 'add_genus' %}">Add Genus</a>
-    <a class="btn btn-default btn-block btn-lg" href="{% url 'add_species' %}">Add Species</a>
-    <a class="btn btn-default btn-block btn-lg" href="{% url 'add_variety' %}">Add Variety</a>
+    <div class="row">
+        <div class="col-xs-6">
+            <a class="btn btn-default btn-block btn-lg" href="{% url 'add_genus' %}">Add Genus</a>
+            <a class="btn btn-default btn-block btn-lg" href="{% url 'add_species' %}">Add Species</a>
+            <a class="btn btn-default btn-block btn-lg" href="{% url 'add_variety' %}">Add Variety</a>
+        </div>
+        <div class="col-xs-6">
+            <a class="btn btn-default btn-block btn-lg" href="{% url 'units' %}">Units</a>
+        <a  class="btn btn-default btn-block btn-lg" href="{% url 'stores' %}">Stores</a>
+        </div>
+    </div>
 {% endif %}
-<h2>User Configuration</h2>
-<a class="btn btn-default btn-block btn-lg" href="{% url 'settings' %}">Settings</a>
-<h2>Site Configuration</h2>
-<a class="btn btn-default btn-block btn-lg" href="{% url 'sites' %}">Sites</a>
-<a class="btn btn-default btn-block btn-lg" href="{% url 'list_site_inventory' %}">Life Forms On Site</a>
-{% if user_sites %}
-    <a class="btn btn-default btn-block btn-lg" href="">Projects</a>
-{% endif %}
+    <h2>User Configuration</h2>
+    <div class="row">
+        <div class="col-xs-6">
+            <a class="btn btn-default btn-block btn-lg" href="{% url 'settings' %}">Settings</a>
+        </div>
+    </div>
+    <h2>Site Configuration</h2>
+    <div class="row">
+        <div class="col-xs-6">
+            <a class="btn btn-default btn-block btn-lg" href="{% url 'sites' %}">Sites</a>
+        {% if user_sites %}
+            <a class="btn btn-default btn-block btn-lg" href="{% url 'list_site_inventory' %}">Life Forms</a>
+        {% endif %}
+        </div>
+        <div class="col-xs-6">
+        {% if user_sites %}
+            <a class="btn btn-default btn-block btn-lg" href="{% url 'projects' %}">Projects</a>
+        {% endif %}
+        </div>
+    </div>
 {% endblock %}
 {% block windowback %}window.location.href='{% url "home" %}'{% endblock %}

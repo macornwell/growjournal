@@ -1,3 +1,4 @@
+from django.forms.models import ModelForm
 from core.models import Site
 from core.services import get_user_core_settings
 

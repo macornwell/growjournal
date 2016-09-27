@@ -1,6 +1,6 @@
 from django.utils import timezone
 from django.db import models
-from core.models import BaseUserActivityModel, Project, BaseModel
+from core.models import BaseUserActivityModel, Project, BaseModel, Unit
 from taxonomy.models import LifeForm
 
 
@@ -17,17 +17,6 @@ class Task(BaseUserActivityModel):
     ended = models.DateTimeField(blank=True, null=True)
     summary = models.CharField(max_length=100, blank=True, null=True)
     details = models.TextField()
-
-
-class Unit(BaseModel):
-    """
-    A unit of measurement.
-    """
-    unit_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=20, unique=True)
-
-    def __str__(self):
-        return self.name
 
 
 class TaskOutput(BaseModel):

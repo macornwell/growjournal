@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'observations',
     'tasks',
     'weather',
+    'purchase',
+    'plant',
 ]
 
 MIDDLEWARE_CLASSES = [

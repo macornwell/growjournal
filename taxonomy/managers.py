@@ -1,6 +1,9 @@
 from django.db import models
 from django.db.models import Q
 
+PLANT_KINGDOM_NAME = 'Plant Kingdom'
+ANIMAL_KINGDOM_NAME = 'Animal Kingdom'
+
 
 class SiteInventoryManager(models.Manager):
     def get_inventory_for_site(self, site):
@@ -31,7 +34,6 @@ class LifeFormManager(models.Manager):
         return super(LifeFormManager, self).get_queryset().filter(Q(name__icontains=query) | Q(latin_name__icontains=query) | Q(variety__isnull=False, variety__name__icontains=query)).distinct()[:20]
 
 
-
 class UserTaxonomySettingsManager(models.Manager):
 
     def get_settings(self, user):
@@ -51,6 +53,12 @@ class KingdomManager(models.Manager, NameAndLatinNameManagerMixin):
 
     def get_kingdom_by_name(self, name):
         return super(KingdomManager, self).get_queryset().filter(name=name).first()
+
+    def get_animal_kingdom(self):
+        return self.get_or_create(name=ANIMAL_KINGDOM_NAME, latin_name='Animalia')[0]
+
+    def get_plant_kingdom(self):
+        return self.get_or_create(name=PLANT_KINGDOM_NAME, latin_name='Plantae')[0]
 
 
 class GenusManager(models.Manager, NameAndLatinNameManagerMixin):

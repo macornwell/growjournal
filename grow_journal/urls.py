@@ -7,16 +7,12 @@ from rest_framework import routers
 import core.urls as CoreUrls
 import observations.urls as ObservationUrls
 import taxonomy.urls as TaxonomyUrls
+import purchase.urls as PurchaseUrls
 from grow_journal.views import home, setup, settings_view
 
 router = routers.DefaultRouter()
 
 
-"""
-url(r'^(?P<page>-?\d+)/$', home_with_page, name='home'),
-#url(r'^(?P<page>.+)/$', home, name='home'),
-#url(r'^work-site/$', worksite, name='work-site'),
-"""
 urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^setup$', setup, name='setup'),
@@ -28,6 +24,7 @@ urlpatterns = [
 urlpatterns += CoreUrls.urlpatterns
 urlpatterns += ObservationUrls.urlpatterns
 urlpatterns += TaxonomyUrls.urlpatterns
+urlpatterns += PurchaseUrls.urlpatterns
 
 ###################
 # Rest Framework

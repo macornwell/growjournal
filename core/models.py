@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from core.managers import SiteManager
+from core.managers import SiteManager, ProjectManager
 
 
 def get_objects_with_datetime_property_on_given_date(modelClass, date):
@@ -16,6 +16,17 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class Unit(BaseModel):
+    """
+    A unit of measurement.
+    """
+    unit_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class BaseUserActivityModel(BaseModel):
@@ -73,8 +84,10 @@ class BaseUserActivityOnSiteModel(BaseModel):
         super(BaseModel, self).save(*args, **kwargs)
 
 
-class Project(BaseUserActivityOnSiteModel):
+class Project(BaseModel):
+    objects = ProjectManager()
     project_id = models.AutoField(primary_key=True)
+    site = models.ForeignKey(Site)
     date_started = models.DateField(default=timezone.now, blank=True, null=True)
     date_ended = models.DateField(blank=True, null=True)
     is_perpetual = models.BooleanField(default=False)

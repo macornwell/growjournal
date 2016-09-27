@@ -1,5 +1,5 @@
-from core.forms import TextBoxControl, CheckboxControl, WizardForm, WizardStep, SimpleSelectionControl, WizardControl, NumberInputControl
-from taxonomy.models import Kingdom, Genus, Species, Variety, LifeForm, SiteInventory
+from core.forms import TextBoxControl, WizardForm, WizardStep, SimpleSelectionControl, WizardControl, NumberInputControl, HiddenSiteControl
+from taxonomy.models import Kingdom, Genus, Species, Variety, SiteInventory
 
 
 class KingdomGenusSpeciesControl(WizardControl):
@@ -105,12 +105,12 @@ class SiteInventoryForm(WizardForm):
     model = SiteInventory
     form_title = 'Add Life Forms'
 
-
     def __init__(self):
         self.steps = (
             WizardStep(form_controls=[
+                HiddenSiteControl(),
                 LifeFormControl(),
-                NumberInputControl(label='Count', name='count', min=1, max=99999),
+                NumberInputControl(label='Count', name='count', int_only=True, min=1, max=99999),
             ]),
         )
 
