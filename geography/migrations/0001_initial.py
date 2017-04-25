@@ -15,10 +15,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('city_id', models.AutoField(serialize=False, primary_key=True)),
+                ('city_id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=50)),
-                ('latitude', models.DecimalField(max_digits=8, blank=True, decimal_places=5, null=True)),
-                ('longitude', models.DecimalField(max_digits=8, blank=True, decimal_places=5, null=True)),
+                ('latitude', models.DecimalField(decimal_places=5, max_digits=8, null=True, blank=True)),
+                ('longitude', models.DecimalField(decimal_places=5, max_digits=8, null=True, blank=True)),
             ],
         ),
         migrations.CreateModel(
@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('continent_id', models.AutoField(serialize=False, primary_key=True)),
+                ('continent_id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(unique=True, max_length=50)),
             ],
             options={
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('country_id', models.AutoField(serialize=False, primary_key=True)),
+                ('country_id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(unique=True, max_length=50)),
                 ('continent', models.ForeignKey(to='geography.Continent')),
             ],
@@ -51,10 +51,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('location', models.AutoField(serialize=False, primary_key=True)),
-                ('latitude', models.DecimalField(max_digits=8, blank=True, decimal_places=5, null=True)),
-                ('longitude', models.DecimalField(max_digits=8, blank=True, decimal_places=5, null=True)),
-                ('city', models.ForeignKey(to='geography.City', blank=True, null=True)),
+                ('location', models.AutoField(primary_key=True, serialize=False)),
+                ('latitude', models.DecimalField(decimal_places=5, max_digits=8, null=True, blank=True)),
+                ('longitude', models.DecimalField(decimal_places=5, max_digits=8, null=True, blank=True)),
+                ('city', models.ForeignKey(null=True, to='geography.City', blank=True)),
                 ('country', models.ForeignKey(to='geography.Country')),
             ],
             options={
@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('state_id', models.AutoField(serialize=False, primary_key=True)),
+                ('state_id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=50)),
                 ('country', models.ForeignKey(to='geography.Country')),
             ],

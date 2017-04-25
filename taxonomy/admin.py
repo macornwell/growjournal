@@ -1,11 +1,11 @@
 from django.contrib import admin
-from taxonomy.models import Genus, Species, Variety, UserTaxonomySettings, SiteInventory, LifeForm, Rootstock, Kingdom
+from taxonomy.models import Genus, Species, Cultivar, UserTaxonomySettings, SiteInventory, LifeForm, Rootstock, Kingdom
 
 # Register your models here.
 admin.site.register(Genus)
 admin.site.register(SiteInventory)
 admin.site.register(Species)
-admin.site.register(Variety)
+admin.site.register(Cultivar)
 admin.site.register(UserTaxonomySettings)
 admin.site.register(LifeForm)
 admin.site.register(Rootstock)

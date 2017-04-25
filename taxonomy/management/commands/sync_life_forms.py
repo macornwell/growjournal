@@ -1,5 +1,5 @@
 from django.core.management import BaseCommand
-from taxonomy.models import Kingdom, Genus, Species, Variety, Rootstock, LifeForm
+from taxonomy.models import Kingdom, Genus, Species, Cultivar, Rootstock, LifeForm
 
 class Command(BaseCommand):
     help = """
@@ -8,16 +8,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for species in Species.objects.all():
-            lifeForm = LifeForm.objects.filter(species=species, variety=None, rootstock=None).first()
+            lifeForm = LifeForm.objects.filter(species=species, cultivar=None, rootstock=None).first()
             if not lifeForm:
                 print('Saving LifeForm for Species: {0}'.format(species.latin_name))
                 lifeForm = LifeForm(kingdom=species.genus.kingdom, genus=species.genus, species=species)
                 lifeForm.save()
-        for variety in Variety.objects.all():
-            lifeForm = LifeForm.objects.filter(species=variety.species, variety=variety, rootstock=None).first()
+        for cultivar in Cultivar.objects.all():
+            lifeForm = LifeForm.objects.filter(species=cultivar.species, cultivar=cultivar, rootstock=None).first()
             if not lifeForm:
-                print('Saving LifeForm for Variety: {0}'.format(variety.name_denormalized))
-                lifeForm = LifeForm(kingdom=variety.species.genus.kingdom, genus=variety.species.genus, species=variety.species, variety=variety)
+                print('Saving LifeForm for Cultivar: {0}'.format(cultivar.name_denormalized))
+                lifeForm = LifeForm(kingdom=cultivar.species.genus.kingdom, genus=cultivar.species.genus, species=cultivar.species, cultivar=cultivar)
                 lifeForm.save()
 
 

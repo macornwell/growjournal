@@ -16,22 +16,22 @@ class LifeFormManager(models.Manager):
         lifeForm = super(LifeFormManager, self).get_or_create(kingdom=species.genus.kingdom, genus=species.genus, species=species, name=species.name, latin_name=species.latin_name)[0]
         return lifeForm
 
-    def get_or_create_from_variety(self, variety):
-        lifeForm = super(LifeFormManager, self).get_or_create(kingdom=variety.species.genus.kingdom, genus=variety.species.genus, species=variety.species, name=variety.species.name, latin_name=variety.species.latin_name)[0]
-        lifeForm = super(LifeFormManager, self).get_or_create(kingdom=variety.species.genus.kingdom, genus=variety.species.genus, species=variety.species, name=variety.name, latin_name=variety.latin_name, variety=variety)[0]
+    def get_or_create_from_cultivar(self, cultivar):
+        lifeForm = super(LifeFormManager, self).get_or_create(kingdom=cultivar.species.genus.kingdom, genus=cultivar.species.genus, species=cultivar.species, name=cultivar.species.name, latin_name=cultivar.species.latin_name)[0]
+        lifeForm = super(LifeFormManager, self).get_or_create(kingdom=cultivar.species.genus.kingdom, genus=cultivar.species.genus, species=cultivar.species, name=cultivar.name, latin_name=cultivar.latin_name, cultivar=cultivar)[0]
         return lifeForm
 
     def get_all_life_forms_for_species(self, species):
         return super(LifeFormManager, self).get_queryset().filter(species_id=species.species_id)
 
-    def get_all_life_forms_for_variety(self, variety):
-        return super(LifeFormManager, self).get_queryset().filter(variety_Id=variety.variety_id)
+    def get_all_life_forms_for_cultivar(self, cultivar):
+        return super(LifeFormManager, self).get_queryset().filter(cultivar_Id=cultivar.cultivar_id)
 
     def get_all_life_forms_for_rootstock(self, rootstock):
         return super(LifeFormManager, self).get_queryset().filter(rootstock_id=rootstock.rootstock_id)
 
     def search_all(self, query, limit=20):
-        return super(LifeFormManager, self).get_queryset().filter(Q(name__icontains=query) | Q(latin_name__icontains=query) | Q(variety__isnull=False, variety__name__icontains=query)).distinct()[:20]
+        return super(LifeFormManager, self).get_queryset().filter(Q(name__icontains=query) | Q(latin_name__icontains=query) | Q(cultivar__isnull=False, cultivar__name__icontains=query)).distinct()[:20]
 
 
 class UserTaxonomySettingsManager(models.Manager):

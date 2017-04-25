@@ -9,9 +9,9 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('taxonomy', '0001_initial'),
         ('geography', '0001_initial'),
-        ('taxonomy', '0007_auto_20160926_1216'),
-        ('core', '0006_unit'),
+        ('core', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('planting_record', models.AutoField(serialize=False, primary_key=True)),
+                ('planting_record', models.AutoField(primary_key=True, serialize=False)),
                 ('datetime', models.DateTimeField(default=django.utils.timezone.now)),
                 ('location', models.TextField(null=True, blank=True)),
                 ('count', models.PositiveIntegerField(null=True, blank=True)),

@@ -17,7 +17,7 @@ class Species
 
 class LifeForm
 
-  constructor: (@id, @name, @latinName, @species=null, @variety=null, @rootstock=null)->
+  constructor: (@id, @name, @latinName, @species=null, @cultivar=null, @rootstock=null)->
     ''
 root.grow_journal.LifeForm = LifeForm
 

@@ -59,14 +59,14 @@ class Species(BaseModel):
         LifeForm.objects.get_or_create_from_species(self)
 
 
-class Variety(BaseModel):
-    variety_id = models.AutoField(primary_key=True)
+class Cultivar(BaseModel):
+    cultivar_id = models.AutoField(primary_key=True)
     species = models.ForeignKey(Species)
     name = models.CharField(max_length=40)
     name_denormalized = models.CharField(max_length=50, blank=True)
     latin_name = models.CharField(max_length=50, blank=True)
-    parent_a = models.ForeignKey('Variety', blank=True, null=True, related_name='first_children')
-    parent_b = models.ForeignKey('Variety', blank=True, null=True, related_name='second_children')
+    parent_a = models.ForeignKey('Cultivar', blank=True, null=True, related_name='first_children')
+    parent_b = models.ForeignKey('Cultivar', blank=True, null=True, related_name='second_children')
     history = models.TextField(blank=True, null=True)
     origin_location = models.ForeignKey(Location, blank=True, null=True)
     origin_year = models.IntegerField(blank=True, null=True)
@@ -84,17 +84,17 @@ class Variety(BaseModel):
         if not self.name_denormalized:
             self.name_denormalized = '{0} {1}'.format(self.name, self.species.name)
         super(BaseModel, self).save(*args, **kwargs)
-        LifeForm.objects.get_or_create_from_variety(self)
+        LifeForm.objects.get_or_create_from_cultivar(self)
 
 
 class Rootstock(BaseModel):
     rootstock_id = models.AutoField(primary_key=True)
-    variety = models.OneToOneField(Variety)
+    cultivar = models.OneToOneField(Cultivar)
     denormalized_name = models.CharField(max_length=30)
     dwarfing = models.CharField(max_length=2, choices=DWARFING_CHOICES)
 
     def save(self, *args, **kwargs):
-        if self.variety.species.kingdom.kingdom_id != Kingdom.objects.get_plant_kingdom().kingdom_id:
+        if self.cultivar.species.kingdom.kingdom_id != Kingdom.objects.get_plant_kingdom().kingdom_id:
             raise Exception('Only Plants can be rootstocks.')
         super(BaseModel, self).save(*args, **kwargs)
 
@@ -105,13 +105,13 @@ class LifeForm(BaseModel):
     kingdom = models.ForeignKey(Kingdom)
     genus = models.ForeignKey(Genus)
     species = models.ForeignKey(Species)
-    variety = models.ForeignKey(Variety, blank=True, null=True)
+    cultivar = models.ForeignKey(Cultivar, blank=True, null=True)
     rootstock = models.ForeignKey(Rootstock, blank=True, null=True)
     name = models.CharField(max_length=50, blank=True)
     latin_name = models.CharField(max_length=50, blank=True)
 
     class Meta:
-        unique_together = (('kingdom', 'genus', 'species', 'variety', 'rootstock'),)
+        unique_together = (('kingdom', 'genus', 'species', 'cultivar', 'rootstock'),)
 
     def save(self, *args, **kwargs):
         self._perform_validation()
@@ -126,38 +126,38 @@ class LifeForm(BaseModel):
             raise Exception('The kingdom for the species does not match the kingdom selected.')
         if self.species.genus != self.genus:
             raise Exception('The genus for the species does not match the genus selected.')
-        if self.variety:
-            if self.variety.species != self.species:
-                raise Exception('The species of the variety does not match the species selected.')
+        if self.cultivar:
+            if self.cultivar.species != self.species:
+                raise Exception('The species of the cultivar does not match the species selected.')
         if self.rootstock:
             if self.kingdom.name != PLANT_KINGDOM_NAME:
                 raise Exception('Only Plants can be grafted.')
-            if not self.variety:
-                raise Exception('A rootstock requires a variety.')
+            if not self.cultivar:
+                raise Exception('A rootstock requires a cultivar.')
 
     def _perform_denormalization(self):
         if not self.name:
-            if self.variety:
-                self.name = self.variety.name
+            if self.cultivar:
+                self.name = self.cultivar.name
             else:
                 self.name = self.species.name
         if not self.latin_name:
             self.latin_name = self.species.latin_name
-            if self.variety:
+            if self.cultivar:
                 self.latin_name = "{0} '{1}'".format(self.latin_name, self.name)
 
     def _perform_additional_saving(self):
         if self.rootstock:
-            if LifeForm.objects.has_variety(self.variety_id):
+            if LifeForm.objects.has_cultivar(self.cultivar_id):
                 pass
 
     def __str__(self):
         line = ''
-        if self.variety:
-            line += self.variety.name + ' ('
+        if self.cultivar:
+            line += self.cultivar.name + ' ('
 
         line += self.species.name
-        if self.variety:
+        if self.cultivar:
             line += ')'
         if self.rootstock:
             line += ' grafted to {0}'.format(self.rootstock.denormalized_name)

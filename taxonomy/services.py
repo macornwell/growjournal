@@ -1,8 +1,8 @@
-from taxonomy.models import LifeForm, Kingdom, Genus, Species, Variety, SiteInventory, UserTaxonomySettings
+from taxonomy.models import LifeForm, Kingdom, Genus, Species, Cultivar, SiteInventory, UserTaxonomySettings
 
 
-def get_or_create_lifeform(kingdom, genus, species, variety=None):
-    return LifeForm.objects.get_or_create(kingdom=kingdom, genus=genus, species=species, variety=variety)
+def get_or_create_lifeform(kingdom, genus, species, cultivar=None):
+    return LifeForm.objects.get_or_create(kingdom=kingdom, genus=genus, species=species, cultivar=cultivar)
 
 
 def is_using_latin(user):
@@ -21,6 +21,6 @@ def get_taxonomy_name(taxonomy, useLatin):
             name = taxonomy.life_form.name
         else:
             name = taxonomy.name
-            if isinstance(taxonomy, Variety):
+            if isinstance(taxonomy, Cultivar):
                 name = taxonomy.name_denormalized
     return name

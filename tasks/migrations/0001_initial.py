@@ -10,8 +10,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('taxonomy', '0001_initial'),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('core', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
@@ -20,10 +20,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('task_id', models.AutoField(serialize=False, primary_key=True)),
+                ('task_id', models.AutoField(primary_key=True, serialize=False)),
                 ('start', models.DateTimeField(default=django.utils.timezone.now)),
-                ('ended', models.DateTimeField(blank=True, null=True)),
-                ('summary', models.CharField(null=True, blank=True, max_length=100)),
+                ('ended', models.DateTimeField(null=True, blank=True)),
+                ('summary', models.CharField(null=True, max_length=100, blank=True)),
                 ('details', models.TextField()),
                 ('project', models.ForeignKey(to='core.Project')),
             ],
@@ -36,11 +36,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('task_output_id', models.AutoField(serialize=False, primary_key=True)),
-                ('amount', models.DecimalField(max_digits=8, decimal_places=2)),
-                ('details', models.TextField(blank=True, null=True)),
-                ('life_form', models.ForeignKey(to='taxonomy.LifeForm', blank=True, null=True)),
+                ('task_output_id', models.AutoField(primary_key=True, serialize=False)),
+                ('amount', models.DecimalField(decimal_places=2, max_digits=8)),
+                ('details', models.TextField(null=True, blank=True)),
+                ('life_form', models.ForeignKey(null=True, to='taxonomy.LifeForm', blank=True)),
                 ('task', models.ForeignKey(to='tasks.Task')),
+                ('unit', models.ForeignKey(to='core.Unit')),
             ],
             options={
                 'abstract': False,
@@ -51,29 +52,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('modified_date', models.DateTimeField(auto_now=True)),
-                ('task_type_id', models.AutoField(serialize=False, primary_key=True)),
+                ('task_type_id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=100)),
             ],
             options={
                 'abstract': False,
             },
-        ),
-        migrations.CreateModel(
-            name='Unit',
-            fields=[
-                ('created_date', models.DateTimeField(auto_now_add=True)),
-                ('modified_date', models.DateTimeField(auto_now=True)),
-                ('unit_id', models.AutoField(serialize=False, primary_key=True)),
-                ('name', models.CharField(unique=True, max_length=20)),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.AddField(
-            model_name='taskoutput',
-            name='unit',
-            field=models.ForeignKey(to='tasks.Unit'),
         ),
         migrations.AddField(
             model_name='task',

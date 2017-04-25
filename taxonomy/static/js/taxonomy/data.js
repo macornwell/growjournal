@@ -45,12 +45,12 @@
   })();
 
   LifeForm = (function() {
-    function LifeForm(id1, name1, latinName1, species1, variety, rootstock) {
+    function LifeForm(id1, name1, latinName1, species1, cultivar, rootstock) {
       this.id = id1;
       this.name = name1;
       this.latinName = latinName1;
       this.species = species1 != null ? species1 : null;
-      this.variety = variety != null ? variety : null;
+      this.cultivar = cultivar != null ? cultivar : null;
       this.rootstock = rootstock != null ? rootstock : null;
       '';
     }

@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from core.urls import create_crud_urls
 from taxonomy.views import GenusCRUDView, SiteInventoryCRUDView, \
-    SpeciesCRUDView, VarietyCRUDView, life_form_search
+    SpeciesCRUDView, CultivarCRUDView, life_form_search
 
 
 urlpatterns = [
@@ -11,4 +11,4 @@ urlpatterns = [
 urlpatterns += create_crud_urls(SiteInventoryCRUDView())
 urlpatterns += create_crud_urls(GenusCRUDView())
 urlpatterns += create_crud_urls(SpeciesCRUDView())
-urlpatterns += create_crud_urls(VarietyCRUDView())
+urlpatterns += create_crud_urls(CultivarCRUDView())

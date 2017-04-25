@@ -4,8 +4,8 @@ from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from core.models import Site
 from core.services import get_active_site
-from taxonomy.models import SiteInventory, Genus, Kingdom, Species, Variety, LifeForm
-from taxonomy.forms import GenusForm, SpeciesForm, VarietyForm, SiteInventoryForm
+from taxonomy.models import SiteInventory, Genus, Kingdom, Species, Cultivar, LifeForm
+from taxonomy.forms import GenusForm, SpeciesForm, CultivarForm, SiteInventoryForm
 from taxonomy.services import is_using_latin
 
 from django_wizard_crud_view.views import CRUDView, ListEntry
@@ -121,14 +121,14 @@ class SpeciesCRUDView(CRUDView):
         model.save()
         return redirect('setup')
 
-class VarietyCRUDView(CRUDView):
-    model_type = Variety
-    form_type = VarietyForm
-    singular = "Variety"
-    plural = "Varieties"
+class CultivarCRUDView(CRUDView):
+    model_type = Cultivar
+    form_type = CultivarForm
+    singular = "Cultivar"
+    plural = "Cultivars"
 
     def get_model(self, modelID):
-        return Variety.objects.get(variety_id=modelID)
+        return Cultivar.objects.get(cultivar_id=modelID)
 
     def get_id(self, model):
         return model.genus_id
@@ -140,7 +140,7 @@ class VarietyCRUDView(CRUDView):
         speciesID = request.POST['species']
         name = request.POST['name']
         if not model:
-            model = Variety()
+            model = Cultivar()
         model.name = name
         model.species = Species.objects.get(species_id=speciesID)
         model.save()
@@ -163,12 +163,12 @@ def life_form_search(request, query):
             'life_form_id': r.life_form_id,
             'name': r.name,
             'latin_name': r.latin_name,
-            'variety': '',
+            'cultivar': '',
             'rootstock': '',
             'species': species,
         }
-        if r.variety:
-            data[r.life_form_id]['variety'] = r.variety.name
+        if r.cultivar:
+            data[r.life_form_id]['cultivar'] = r.cultivar.name
         if r.rootstock:
             data[r.life_form_id]['rootstock'] = r.rootstock.name
     return JsonResponse(data)

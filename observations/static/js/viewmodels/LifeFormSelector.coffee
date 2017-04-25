@@ -22,23 +22,23 @@ class LifeFormSelector
     @availableSpecies = ko.observableArray()
     @selectedSpecies = ko.observable()
     @availableVarieties = ko.observableArray()
-    @selectedVariety = ko.observable()
+    @selectedCultivar = ko.observable()
 
     @selectedKingdom.subscribe(_onSelectedKingdom)
 
   addKingdom: (id, name)=>
     @kingdomChoices.push(new Kingdom(id, name))
 
-  _resetData: (genus, species, variety)=>
+  _resetData: (genus, species, cultivar)=>
     if (genus)
       @availableGenus = ko.observableArray()
       @selectedGenus = ko.observable()
     if (species)
       @availableSpecies = ko.observableArray()
       @selectedSpecies = ko.observable()
-    if (variety)
+    if (cultivar)
       @availableVarieties = ko.observableArray()
-      @selectedVariety = ko.observable()
+      @selectedCultivar = ko.observable()
 
   _onSelectedKingdom: (kingdomSelected)=>
     id = kingdomSelected.id

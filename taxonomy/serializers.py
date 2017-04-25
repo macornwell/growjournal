@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from taxonomy.models import Kingdom, Genus, Species, Variety, LifeForm
+from taxonomy.models import Kingdom, Genus, Species, Cultivar, LifeForm
 
 class KingdomSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -19,16 +19,16 @@ class SpeciesSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('species_id', 'kingdom', 'genus', 'name', 'latin_name', 'origin_location')
 
 
-class VarietySerializer(serializers.HyperlinkedModelSerializer):
+class CultivarSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Variety
-        fields = ('variety_id', 'species', 'name', 'name_denormalized', 'latin_name', 'origin_location')
+        model = Cultivar
+        fields = ('cultivar_id', 'species', 'name', 'name_denormalized', 'latin_name', 'origin_location')
 
 
 class LifeFormSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = LifeForm
-        fields = ('life_form_id', 'species', 'variety', 'rootstock', 'name', 'latin_name')
+        fields = ('life_form_id', 'species', 'cultivar', 'rootstock', 'name', 'latin_name')
 
 
 

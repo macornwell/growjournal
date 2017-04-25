@@ -2,7 +2,7 @@ from django_wizard_form.forms import WizardForm, WizardStep
 from django_wizard_form.form_controls import SimpleSelectionControl, TextBoxControl, NumberInputControl
 from core.form_controls import HiddenSiteControl
 from taxonomy.form_controls import KingdomGenusSpeciesControl, LifeFormControl
-from taxonomy.models import Kingdom, Genus, Species, Variety, SiteInventory
+from taxonomy.models import Kingdom, Genus, Species, Cultivar, SiteInventory
 
 
 class GenusForm(WizardForm):
@@ -50,9 +50,9 @@ class SpeciesForm(WizardForm):
 
 
 
-class VarietyForm(WizardForm):
-    model = Variety
-    form_title = 'Add New Variety'
+class CultivarForm(WizardForm):
+    model = Cultivar
+    form_title = 'Add New Cultivar'
 
     def __init__(self):
         self.steps = (

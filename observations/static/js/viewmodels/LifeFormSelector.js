@@ -65,7 +65,7 @@
       this.availableSpecies = ko.observableArray();
       this.selectedSpecies = ko.observable();
       this.availableVarieties = ko.observableArray();
-      this.selectedVariety = ko.observable();
+      this.selectedCultivar = ko.observable();
       this.selectedKingdom.subscribe(_onSelectedKingdom);
     }
 
@@ -73,7 +73,7 @@
       return this.kingdomChoices.push(new Kingdom(id, name));
     };
 
-    LifeFormSelector.prototype._resetData = function(genus, species, variety) {
+    LifeFormSelector.prototype._resetData = function(genus, species, cultivar) {
       if (genus) {
         this.availableGenus = ko.observableArray();
         this.selectedGenus = ko.observable();
@@ -82,9 +82,9 @@
         this.availableSpecies = ko.observableArray();
         this.selectedSpecies = ko.observable();
       }
-      if (variety) {
+      if (cultivar) {
         this.availableVarieties = ko.observableArray();
-        return this.selectedVariety = ko.observable();
+        return this.selectedCultivar = ko.observable();
       }
     };
 
